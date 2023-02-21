@@ -1,13 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
-import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/constant/Images/svgs.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
-import 'package:memorylif/ui/widgets/big_btn.dart';
-import 'package:memorylif/ui/widgets/section_text_field_with_decor.dart';
 
 class SignUpScreen extends BaseStateFullWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -21,142 +17,95 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return BaseScaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: widget.dimens.k20,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: widget.dimens.k80,
+            ),
+            Center(
+              child: Container(
+                height: widget.dimens.k150,
+                width: widget.dimens.k150,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage('assets/images/logo.jpeg'),
+                  fit: BoxFit.cover,
+                )),
               ),
-              Center(
-                child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: SvgAssets.openAILogo,
+            ),
+            const Spacer(),
+            Text(
+              'Create your account',
+              style: context.textTheme.headline5?.copyWith(
+                color: Style.textColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: widget.dimens.k10,
+            ),
+            Text(
+              'Please note that Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+              style: context.textTheme.bodyText2?.copyWith(
+                color: Style.textColor,
+              ),
+            ),
+            SizedBox(
+              height: widget.dimens.k60,
+            ),
+            Container(
+                height: widget.dimens.k50,
+                width: context.width,
+                decoration: BoxDecoration(
+                  color: Style.primaryColor,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Style.primaryColor),
                 ),
-              ),
-              SizedBox(
-                height: widget.dimens.k40,
-              ),
-              Text(
-                'Create your account',
-                style: context.textTheme.headline5?.copyWith(
-                  color: Style.whiteColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(
-                height: widget.dimens.k20,
-              ),
-              Text(
-                'Please note that phone verification is required for signup. Your number will only be used to verify your identity for security purposes.',
-                textAlign: TextAlign.center,
-                style: context.textTheme.bodyText2?.copyWith(
-                  color: Style.whiteColor,
-                ),
-              ).addPadding(const EdgeInsets.symmetric(horizontal: 15)),
-              SizedBox(
-                height: widget.dimens.k20,
-              ),
-              SectionTextFieldDecor(
-                hintText: 'Email',
-              ),
-              SizedBox(
-                height: widget.dimens.k20,
-              ),
-              BigBtn(
-                child: Text(
-                  'Create your account',
-                  style: context.textTheme.bodyText1?.copyWith(
-                    color: Style.whiteColor,
-                  ),
-                ),
-                onTap: () {
-                  widget.navigator
-                      .pushReplacementNamed(RoutePath.setPasswordScreen);
-                },
-              ),
-              SizedBox(
-                height: widget.dimens.k20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Already have an account? ',
-                    style: context.textTheme.bodyText1?.copyWith(
-                      color: Style.whiteColor,
-                    ),
-                  ),
-                  Text(
-                    'Log in',
-                    style: context.textTheme.bodyText1?.copyWith(
-                      color: Style.primaryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ).onTap(() {
-                    widget.navigator
-                        .pushNamedAndRemoveUntil(RoutePath.loginScreen);
-                  }),
-                ],
-              ),
-              SizedBox(
-                height: widget.dimens.k20,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                        margin: const EdgeInsets.only(right: 15.0),
-                        child: const Divider(
-                          color: Style.whiteColor,
-                          height: 50,
-                        )),
-                  ),
-                  Text(
-                    "OR",
-                    style: context.textTheme.bodyText1?.copyWith(
-                      color: Style.whiteColor,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 15.0),
-                      child: const Divider(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: const BoxDecoration(
                         color: Style.whiteColor,
-                        height: 50,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgAssets.googleIcon
+                          .addPadding(EdgeInsets.all(widget.dimens.k5)),
+                    ).addPadding(const EdgeInsets.only(
+                      right: 10,
+                      top: 10,
+                      bottom: 10,
+                    )),
+                    Text(
+                      'Continue with Google',
+                      style: context.textTheme.bodyText1?.copyWith(
+                        color: Style.whiteColor,
                       ),
                     ),
+                  ],
+                ).addPadding(const EdgeInsets.symmetric(horizontal: 5))),
+            SizedBox(
+              height: widget.dimens.k40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Use free version',
+                  style: context.textTheme.bodyText2?.copyWith(
+                    color: Style.textColor,
                   ),
-                ],
-              ),
-              SizedBox(
-                height: widget.dimens.k20,
-              ),
-              Container(
-                  height: widget.dimens.k50,
-                  width: context.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Style.whiteColor),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SvgAssets.googleIcon.addPadding(
-                          const EdgeInsets.only(right: 15, top: 10, bottom: 10)),
-                      Text(
-                        'Continue with Google',
-                        style: context.textTheme.bodyText1?.copyWith(
-                          color: Style.whiteColor,
-                        ),
-                      ),
-                    ],
-                  ).addPadding(const EdgeInsets.symmetric(horizontal: 15))),
-            ],
-          ).addPadding(const EdgeInsets.all(15)),
-        ),
+                ).addPadding(EdgeInsets.only(right: widget.dimens.k5)),
+                const Icon(
+                  Icons.arrow_right_alt,
+                  color: Style.textColor,
+                )
+              ],
+            ),
+          ],
+        ).addPadding(EdgeInsets.symmetric(
+            horizontal: widget.dimens.k15, vertical: widget.dimens.k30)),
       ),
     );
   }
