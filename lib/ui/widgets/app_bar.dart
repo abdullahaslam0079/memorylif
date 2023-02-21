@@ -7,7 +7,6 @@ import 'package:memorylif/ui/base/base_widget.dart';
 class AppBarLogoWidget extends BaseStateLessWidget implements PreferredSizeWidget {
   final bool? automaticallyImplyLeading;
   final double appBarHeight;
-  final Widget title;
   final Widget? leading;
   final bool sameHeight;
   final List<Widget>? actions;
@@ -16,7 +15,6 @@ class AppBarLogoWidget extends BaseStateLessWidget implements PreferredSizeWidge
       this.sameHeight = true,
       this.appBarHeight = kToolbarHeight,
       this.automaticallyImplyLeading,
-      required this.title,
       this.leading,
       this.actions})
       : super(key: key);
@@ -24,14 +22,23 @@ class AppBarLogoWidget extends BaseStateLessWidget implements PreferredSizeWidge
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+      backgroundColor: Style.backgroundColor,
+      elevation: 1,
       centerTitle: true,
       toolbarHeight: sameHeight ? appBarHeight : null,
       automaticallyImplyLeading: automaticallyImplyLeading ?? false,
       leading: leading,
       actions: actions,
-      title: title,
+      title: Container(
+        height: dimens.k40,
+        width: dimens.k150,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/logofull.jpeg'),
+            fit: BoxFit.cover,
+          )
+        ),
+      ),
       titleTextStyle: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(color: Style.backgroundColor, fontFamily: 'Raleway'),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
+import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/constant/Images/svgs.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
@@ -83,7 +84,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ],
-                ).addPadding(const EdgeInsets.symmetric(horizontal: 5))),
+                ).addPadding(const EdgeInsets.symmetric(horizontal: 5))).onTap(() {
+              widget.navigator
+                  .pushReplacementNamed(RoutePath.homeScreen);
+            }),
             SizedBox(
               height: widget.dimens.k40,
             ),

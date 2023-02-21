@@ -6,16 +6,10 @@ class RouteGenerator {
     switch (settings.name) {
       case RoutePath.initialRoute:
         return PageRouter.fadeScale(() => SignUpScreen());
-      case RoutePath.setPasswordScreen:
-        return PageRouter.fadeScale(() => SetPasswordScreen());
-      case RoutePath.loginScreen:
-        return PageRouter.fadeScale(() => LoginScreen());
-        case RoutePath.verifyEmailScreen:
-        return PageRouter.fadeScale(() => VerifyEmailScreen());
-        case RoutePath.getUserDataScreen:
-        return PageRouter.fadeScale(() => GetUserDataScreen());
       case RoutePath.signUpScreen:
         return PageRouter.fadeScale(() => SignUpScreen());
+        case RoutePath.homeScreen:
+        return PageRouter.fadeScale(() => HomeScreen());
       default:
         return _errorRoute();
     }
