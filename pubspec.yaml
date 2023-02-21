@@ -58,7 +58,7 @@ dependencies:
   fluttertoast: ^8.1.1
   flutter_progress_hud: ^2.0.2
   dotted_border: ^2.0.0+3
-  super_editor: ^0.2.3+1
+  flutter_quill: ^6.4.4
 
 dev_dependencies:
   flutter_test:

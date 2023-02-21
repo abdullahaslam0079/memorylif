@@ -3,4 +3,5 @@ class RoutePath {
   static const onBoarding = '${initialRoute}onBoarding';
   static const signUpScreen = '${initialRoute}signUpScreen';
   static const homeScreen = '${initialRoute}homeScreen';
+  static const textEditorScreen = '${initialRoute}textEditorScreen';
 }
