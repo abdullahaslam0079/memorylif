@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_summernote/flutter_summernote.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
+import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
+import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
 
 class TextEditorScreen extends BaseStateFullWidget {
@@ -14,27 +17,44 @@ class TextEditorScreen extends BaseStateFullWidget {
 
 class _TextEditorState extends State<TextEditorScreen> {
 
-  final QuillController _controller = QuillController.basic();
-
+  GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
+  String htmlText = '';
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      appBar: AppBarLogoWidget(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            QuillToolbar.basic(controller: _controller),
-            Expanded(
-              child: Container(
-                child: QuillEditor.basic(
-                  controller: _controller,
-                  readOnly: false, // true for view only mode
-                ),
+      appBar: AppBarLogoWidget(
+        leading: CustomBackButton(),
+      ),
+      body: Column(
+        children: <Widget>[
+          FlutterSummernote(
+              hint: "Your text here...",
+              key: _keyEditor,
+              height: 300,
+              showBottomToolbar: true,
+              hasAttachment: true,
+              decoration: BoxDecoration(
+                color: Style.cardColor,
+                borderRadius: BorderRadius.circular(widget.dimens.k10),
               ),
-            )
-          ],
-        ).addPadding(EdgeInsets.all(widget.dimens.k15)),
+              customToolbar: """
+                [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']]
+                ]""",
+              returnContent: (value){
+                print('This is value ::: $value');
+                setState(() {
+                  htmlText = value;
+                });
+              }
+          ).addPadding(EdgeInsets.only(left: widget.dimens.k15, right: widget.dimens.k15, top: widget.dimens.k15, bottom: widget.dimens.k30)),
+
+          Html(
+            data: htmlText,
+          ),
+        ],
       ),
     );
   }
