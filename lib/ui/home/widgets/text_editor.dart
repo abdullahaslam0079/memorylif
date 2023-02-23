@@ -16,7 +16,7 @@ class TextEditorScreen extends BaseStateFullWidget {
 
 class _TextEditorState extends State<TextEditorScreen> {
 
-  GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
+  final GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
