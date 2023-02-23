@@ -56,56 +56,66 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: widget.dimens.k60,
             ),
             Container(
-                height: widget.dimens.k50,
-                width: context.width,
-                decoration: BoxDecoration(
-                  color: Style.primaryColor,
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: Style.primaryColor),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Style.whiteColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgAssets.googleIcon
-                          .addPadding(EdgeInsets.all(widget.dimens.k5)),
-                    ).addPadding(const EdgeInsets.only(
-                      right: 10,
-                      top: 10,
-                      bottom: 10,
-                    )),
-                    Text(
-                      'Continue with Google',
-                      style: context.textTheme.bodyText1?.copyWith(
-                        color: Style.whiteColor,
-                      ),
+                    height: widget.dimens.k50,
+                    width: context.width,
+                    decoration: BoxDecoration(
+                      color: Style.primaryColor,
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(color: Style.primaryColor),
                     ),
-                  ],
-                ).addPadding(const EdgeInsets.symmetric(horizontal: 5))).onTap(() {
-              widget.navigator
-                  .pushReplacementNamed(RoutePath.homeScreen);
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Style.whiteColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgAssets.googleIcon
+                              .addPadding(EdgeInsets.all(widget.dimens.k5)),
+                        ).addPadding(const EdgeInsets.only(
+                          right: 10,
+                          top: 10,
+                          bottom: 10,
+                        )),
+                        Text(
+                          'Continue with Google',
+                          style: context.textTheme.bodyText1?.copyWith(
+                            color: Style.whiteColor,
+                          ),
+                        ),
+                      ],
+                    ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
+                .onTap(() {
+              widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
             }),
             SizedBox(
-              height: widget.dimens.k40,
+              height: widget.dimens.k10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Use free version',
-                  style: context.textTheme.bodyText2?.copyWith(
-                    color: Style.textColor,
-                  ),
-                ).addPadding(EdgeInsets.only(right: widget.dimens.k5)),
-                const Icon(
-                  Icons.arrow_right_alt,
-                  color: Style.textColor,
-                )
-              ],
+            Container(
+              height: widget.dimens.k50,
+              width: context.width,
+              decoration: BoxDecoration(
+                color: Style.cardColor,
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: Style.cardColor),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Use free version',
+                      style: context.textTheme.bodyText1?.copyWith(
+                        color: Style.textColor,
+                      ),
+                    ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+                    const Icon(
+                      Icons.arrow_right_alt,
+                      color: Style.primaryColor,
+                    )
+                  ],
+                ),
+              ),
             ),
           ],
         ).addPadding(EdgeInsets.symmetric(

@@ -10,6 +10,8 @@ class RouteGenerator {
         return PageRouter.fadeScale(() => SignUpScreen());
         case RoutePath.homeScreen:
         return PageRouter.fadeScale(() => HomeScreen());
+        case RoutePath.dashboardScreen:
+        return PageRouter.fadeScale(() => DashboardScreen());
         case RoutePath.textEditorScreen:
         return PageRouter.fadeScale(() => TextEditorScreen());
       default:

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Style {
-  static const primaryColor = Color(0xff0C9393);
-  static const accentColor = Color(0xff634AFF);
+  // static const primaryColor = Color(0xff0C9393);
+  static const primaryColor = Color(0xff428C75);
+  static const accentColor = Color(0xffFFE454);
   static const textColor = Color(0xff1A1A1A);
-  static const cardColor = Color(0xffE5F1F2);
+  static const cardColor = Color(0xffDEE7E1);
   static const whiteColor = Color(0xffffffff);
   static const backgroundColor = whiteColor;
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_summernote/flutter_summernote.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/constant/style.dart';
@@ -18,7 +17,6 @@ class TextEditorScreen extends BaseStateFullWidget {
 class _TextEditorState extends State<TextEditorScreen> {
 
   GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
-  String htmlText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,36 +24,24 @@ class _TextEditorState extends State<TextEditorScreen> {
       appBar: AppBarLogoWidget(
         leading: CustomBackButton(),
       ),
-      body: Column(
-        children: <Widget>[
-          FlutterSummernote(
-              hint: "Your text here...",
-              key: _keyEditor,
-              height: 300,
-              showBottomToolbar: true,
-              hasAttachment: true,
-              decoration: BoxDecoration(
-                color: Style.cardColor,
-                borderRadius: BorderRadius.circular(widget.dimens.k10),
-              ),
-              customToolbar: """
-                [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']]
-                ]""",
-              returnContent: (value){
-                print('This is value ::: $value');
-                setState(() {
-                  htmlText = value;
-                });
-              }
-          ).addPadding(EdgeInsets.only(left: widget.dimens.k15, right: widget.dimens.k15, top: widget.dimens.k15, bottom: widget.dimens.k30)),
-
-          Html(
-            data: htmlText,
+      body: FlutterSummernote(
+          hint: "Your text here...",
+          key: _keyEditor,
+          showBottomToolbar: true,
+          hasAttachment: true,
+          decoration: BoxDecoration(
+            color: Style.cardColor,
+            borderRadius: BorderRadius.circular(widget.dimens.k10),
           ),
-        ],
-      ),
+          customToolbar: """
+            [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']]
+            ]""",
+          returnContent: (value){
+
+          }
+      ).addPadding(EdgeInsets.only(left: widget.dimens.k15, right: widget.dimens.k15, top: widget.dimens.k15, bottom: widget.dimens.k30)),
     );
   }
 }
