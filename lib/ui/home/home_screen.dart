@@ -94,11 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-
         SizedBox(
           height: widget.dimens.k20,
         ),
-
         Center(
           child: Text(
             'Time remaining: 2:40:15',
