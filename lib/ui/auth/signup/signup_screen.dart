@@ -30,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: widget.dimens.k20,
             ),
             Text(
-              'You had already an \naccount?',
+              'One last step',
               style: context.textTheme.headline5?.copyWith(
                 color: Style.textColor,
                 fontWeight: FontWeight.w600,
@@ -56,53 +56,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Style.textColor,
               ),
             ),
-            const Spacer(),
-            Container(
-                    height: widget.dimens.k50,
-                    width: context.width,
-                    decoration: BoxDecoration(
-                      color: Style.primaryColor,
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(color: Style.primaryColor),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: Style.whiteColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: SvgAssets.googleIcon
-                              .addPadding(EdgeInsets.all(widget.dimens.k5)),
-                        ).addPadding(EdgeInsets.only(
-                          right: widget.dimens.k10,
-                          top: widget.dimens.k10,
-                          bottom: widget.dimens.k10,
-                        )),
-                        Text(
-                          'Continue with Google',
-                          style: context.textTheme.bodyText1?.copyWith(
-                            color: Style.whiteColor,
-                          ),
-                        ),
-
-                        const Spacer(),
-
-                        Text(
-                          '\$ 19.99/year',
-                          style: context.textTheme.caption?.copyWith(
-                            color: Style.whiteColor,
-                          ),
-                        ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
-
-                      ],
-                    ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
-                .onTap(() {
-              widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
-            }),
             SizedBox(
-              height: widget.dimens.k10,
+              height: widget.dimens.k20,
             ),
+
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.check_box_outlined,
+                  color: Style.primaryColor,
+                  size: widget.dimens.k20,
+                ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+                Text(
+                  'I accept Terms and Conditions',
+                  style: context.textTheme.bodyText2?.copyWith(
+                    color: Style.textColor,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
             Container(
               height: widget.dimens.k50,
               width: context.width,
@@ -116,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Use free version',
+                      'Use normal app',
                       style: context.textTheme.bodyText1?.copyWith(
                         color: Style.textColor,
                       ),
@@ -129,6 +102,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
             ),
+            SizedBox(
+              height: widget.dimens.k10,
+            ),
+
+            Container(
+                height: widget.dimens.k50,
+                width: context.width,
+                decoration: BoxDecoration(
+                  color: Style.primaryColor,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Style.primaryColor),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Style.whiteColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgAssets.googleIcon
+                          .addPadding(EdgeInsets.all(widget.dimens.k5)),
+                    ).addPadding(EdgeInsets.only(
+                      right: widget.dimens.k10,
+                      top: widget.dimens.k10,
+                      bottom: widget.dimens.k10,
+                    )),
+                    Text(
+                      'Continue with Google',
+                      style: context.textTheme.bodyText1?.copyWith(
+                        color: Style.whiteColor,
+                      ),
+                    ),
+
+                    const Spacer(),
+
+                    Text(
+                      '\$ 19.99/year',
+                      style: context.textTheme.caption?.copyWith(
+                        color: Style.whiteColor,
+                      ),
+                    ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+
+                  ],
+                ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
+                .onTap(() {
+              widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
+            }),
           ],
         ).addPadding(EdgeInsets.symmetric(
             horizontal: widget.dimens.k15, vertical: widget.dimens.k30)),

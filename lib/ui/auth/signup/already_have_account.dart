@@ -24,71 +24,88 @@ class _SignUpScreenState extends State<AlreadyHaveAccount> {
       ),
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: widget.dimens.k20,
-            ),
-            Text(
-              'You had already an \naccount?',
-              style: context.textTheme.headline5?.copyWith(
-                color: Style.textColor,
-                fontWeight: FontWeight.w600,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: widget.dimens.k20,
               ),
-            ),
-
-            SizedBox(
-              height: widget.dimens.k50,
-            ),
-            Text(
-              'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
-              style: context.textTheme.bodyText2?.copyWith(
-                color: Style.textColor,
-              ),
-            ),
-
-            SizedBox(
-              height: widget.dimens.k60,
-            ),
-            Container(
-                height: widget.dimens.k50,
-                width: context.width,
-                decoration: BoxDecoration(
-                  color: Style.primaryColor,
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: Style.primaryColor),
+              Text(
+                'You had already an \naccount?',
+                style: context.textTheme.headline5?.copyWith(
+                  color: Style.textColor,
+                  fontWeight: FontWeight.w600,
                 ),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Style.whiteColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgAssets.googleIcon
-                          .addPadding(EdgeInsets.all(widget.dimens.k5)),
-                    ).addPadding(const EdgeInsets.only(
-                      right: 10,
-                      top: 10,
-                      bottom: 10,
-                    )),
-                    Text(
-                      'Continue with Google',
-                      style: context.textTheme.bodyText1?.copyWith(
-                        color: Style.whiteColor,
-                      ),
-                    ),
-                  ],
-                ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
-                .onTap(() {
-              widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
-            }),
-            SizedBox(
-              height: widget.dimens.k10,
-            ),
+              ),
+              SizedBox(
+                height: widget.dimens.k50,
+              ),
+              Text(
+                'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
+                style: context.textTheme.bodyText2?.copyWith(
+                  color: Style.textColor,
+                ),
+              ),
 
-          ]
-        ).addPadding(EdgeInsets.symmetric(
+              SizedBox(
+                height: widget.dimens.k20,
+              ),
+
+              Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.check_box_outlined,
+                    color: Style.primaryColor,
+                    size: widget.dimens.k20,
+                  ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+                  Text(
+                    'I accept Terms and Conditions',
+                    style: context.textTheme.bodyText2?.copyWith(
+                      color: Style.textColor,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: widget.dimens.k60,
+              ),
+              Container(
+                      height: widget.dimens.k50,
+                      width: context.width,
+                      decoration: BoxDecoration(
+                        color: Style.primaryColor,
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(color: Style.primaryColor),
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Style.whiteColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: SvgAssets.googleIcon
+                                .addPadding(EdgeInsets.all(widget.dimens.k5)),
+                          ).addPadding(const EdgeInsets.only(
+                            right: 10,
+                            top: 10,
+                            bottom: 10,
+                          )),
+                          Text(
+                            'Continue with Google',
+                            style: context.textTheme.bodyText1?.copyWith(
+                              color: Style.whiteColor,
+                            ),
+                          ),
+                        ],
+                      ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
+                  .onTap(() {
+                widget.navigator
+                    .pushReplacementNamed(RoutePath.dashboardScreen);
+              }),
+              SizedBox(
+                height: widget.dimens.k10,
+              ),
+            ]).addPadding(EdgeInsets.symmetric(
             horizontal: widget.dimens.k15, vertical: widget.dimens.k30)),
       ),
     );
