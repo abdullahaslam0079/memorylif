@@ -4,6 +4,8 @@ import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/constant/Images/svgs.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
+import 'package:memorylif/ui/widgets/app_bar.dart';
+import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
 
 class SignUpScreen extends BaseStateFullWidget {
@@ -17,44 +19,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      appBar: AppBarLogoWidget(
+        leading: CustomBackButton(),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: widget.dimens.k80,
+              height: widget.dimens.k20,
             ),
-            Center(
-              child: Container(
-                height: widget.dimens.k150,
-                width: widget.dimens.k150,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                  image: AssetImage('assets/images/logo.jpeg'),
-                  fit: BoxFit.cover,
-                )),
-              ),
-            ),
-            const Spacer(),
             Text(
-              'Create your account',
+              'You had already an \naccount?',
               style: context.textTheme.headline5?.copyWith(
                 color: Style.textColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
+
             SizedBox(
-              height: widget.dimens.k10,
+              height: widget.dimens.k50,
             ),
             Text(
-              'Please note that Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+              'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
               style: context.textTheme.bodyText2?.copyWith(
                 color: Style.textColor,
               ),
             ),
+
             SizedBox(
-              height: widget.dimens.k60,
+              height: widget.dimens.k50,
             ),
+            Text(
+              'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
+              style: context.textTheme.bodyText2?.copyWith(
+                color: Style.textColor,
+              ),
+            ),
+            const Spacer(),
             Container(
                     height: widget.dimens.k50,
                     width: context.width,
@@ -72,10 +74,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           child: SvgAssets.googleIcon
                               .addPadding(EdgeInsets.all(widget.dimens.k5)),
-                        ).addPadding(const EdgeInsets.only(
-                          right: 10,
-                          top: 10,
-                          bottom: 10,
+                        ).addPadding(EdgeInsets.only(
+                          right: widget.dimens.k10,
+                          top: widget.dimens.k10,
+                          bottom: widget.dimens.k10,
                         )),
                         Text(
                           'Continue with Google',
@@ -83,6 +85,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: Style.whiteColor,
                           ),
                         ),
+
+                        const Spacer(),
+
+                        Text(
+                          '\$ 19.99/year',
+                          style: context.textTheme.caption?.copyWith(
+                            color: Style.whiteColor,
+                          ),
+                        ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+
                       ],
                     ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
                 .onTap(() {

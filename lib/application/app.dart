@@ -7,16 +7,16 @@ import 'package:memorylif/ui/base/base_mixin.dart';
 import 'package:provider/provider.dart';
 import 'app_view_model.dart';
 
-class ChatGPTCenteralApp extends StatefulWidget {
+class MemoryLifApp extends StatefulWidget {
   final SetRegisteredRoutes? route;
 
-  const ChatGPTCenteralApp({Key? key, this.route}) : super(key: key);
+  const MemoryLifApp({Key? key, this.route}) : super(key: key);
 
   @override
-  State<ChatGPTCenteralApp> createState() => ChatGPTCenteralAppState();
+  State<MemoryLifApp> createState() => MemoryLifAppState();
 }
 
-class ChatGPTCenteralAppState extends State<ChatGPTCenteralApp> with BaseMixin {
+class MemoryLifAppState extends State<MemoryLifApp> with BaseMixin {
 
   @override
   Widget build(BuildContext context) {

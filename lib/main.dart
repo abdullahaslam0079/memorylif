@@ -12,7 +12,7 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();     
     await config.initMainServiceLocator();
     const routes = RouteGenerator.generateRoute;
-    const root = ChatGPTCenteralApp(route: routes);
+    const root = MemoryLifApp(route: routes);
   
     runApp(root);
   }, (error, stackTrace) async {      
