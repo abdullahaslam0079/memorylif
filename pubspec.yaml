@@ -60,6 +60,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   flutter_summernote: ^1.1.1
   salomon_bottom_bar: ^3.3.1
+  flutter_widget_from_html: ^0.10.0
 
 dev_dependencies:
   flutter_test:

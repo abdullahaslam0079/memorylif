@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<GetStartedScreen> {
                 ),
               ),
             ).onTap(() {
-              widget.navigator.pushReplacementNamed(RoutePath.signUpScreen);
+              widget.navigator.pushNamed(RoutePath.signUpScreen);
             }),
             SizedBox(
               height: widget.dimens.k10,
@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<GetStartedScreen> {
                 ),
               ),
             ).onTap(() {
-              widget.navigator.pushReplacementNamed(RoutePath.alreadyHaveAccount);
+              widget.navigator.pushNamed(RoutePath.alreadyHaveAccount);
             }),
           ],
         ).addPadding(EdgeInsets.symmetric(

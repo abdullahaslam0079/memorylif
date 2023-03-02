@@ -3,6 +3,7 @@ import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
+import 'package:memorylif/ui/home/widgets/text_editor.dart';
 
 
 class HomeScreen extends BaseStateFullWidget {
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ).addPadding(EdgeInsets.all(widget.dimens.k15)),
           ).onTap(() {
             widget.navigator
-                .pushReplacementNamed(RoutePath.textEditorScreen);
+                .pushNamed(RoutePath.textEditorScreen);
           }),
         ),
 

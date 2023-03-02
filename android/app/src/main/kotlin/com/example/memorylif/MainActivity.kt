@@ -1,4 +1,4 @@
-package com.example.memorylif
+package com.android.memorylif
 
 import io.flutter.embedding.android.FlutterActivity
 

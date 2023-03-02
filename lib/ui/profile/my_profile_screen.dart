@@ -124,19 +124,87 @@ class _HomeScreenState extends State<MyProfileScreen> {
                 ),
               ),
               builder: (context) {
-                return SizedBox(
-                  height: 200,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-
-                    ],
-                  ),
-                );
+                return bottomSheetWidget();
               });
         }),
       ],
     ).addPadding(EdgeInsets.all(widget.dimens.k15));
   }
+
+  Widget bottomSheetWidget(){
+    return SizedBox(
+      height: widget.dimens.k350,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: widget.dimens.k10,
+          ),
+          Text(
+            'Premium Version',
+            style: context.textTheme.headlineSmall?.copyWith(
+              color: Style.primaryColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(
+            height: widget.dimens.k20,
+          ),
+          Text(
+            'All your data is store on your phone, it will not alerate your experience but if you uninstall ot lose your phone all your data will be lost.',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: Style.textColor,
+            ),
+          ),
+          SizedBox(
+            height: widget.dimens.k10,
+          ),
+          Text(
+            'By paying onl;y \$ 19.99 / year all your data will be store on server and you can recover your data anytime if you uninstall the application or lose your phone.',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: Style.textColor,
+            ),
+          ),
+
+          const Spacer(),
+
+          Container(
+        height: widget.dimens.k50,
+        width: context.width,
+        decoration: BoxDecoration(
+          color: Style.primaryColor,
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(color: Style.cardColor),
+        ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Pay Now',
+                style: context.textTheme.bodyText1?.copyWith(
+                  color: Style.whiteColor,
+                ),
+              ),
+              Text(
+                '\$ 19.99',
+                style: context.textTheme.bodyText1?.copyWith(
+                  color: Style.whiteColor,
+                ),
+              ),
+            ],
+          ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
+        ),
+      ),
+
+          SizedBox(
+            height: widget.dimens.k20,
+          ),
+
+        ],
+      ).addPadding(EdgeInsets.all(widget.dimens.k15)),
+    );
+  }
+
 }

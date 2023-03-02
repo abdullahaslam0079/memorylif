@@ -111,7 +111,18 @@ class _HomeScreenState extends State<MyBookScreen> {
                   ),
                 ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
               ],
-            ).addPadding(const EdgeInsets.symmetric(horizontal: 5))),
+            ).addPadding(const EdgeInsets.symmetric(horizontal: 5))).onTap(() {
+          showModalBottomSheet(
+              context: context,
+              shape: const RoundedRectangleBorder( // <-- SEE HERE
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(25.0),
+                ),
+              ),
+              builder: (context) {
+                return bottomSheetWidget();
+              });
+        }),
       ],
     ).addPadding(EdgeInsets.all(widget.dimens.k15));
   }
@@ -125,4 +136,74 @@ class _HomeScreenState extends State<MyBookScreen> {
     'The Loving Paris',
     'Dedication For Dream'
   ];
+
+  Widget bottomSheetWidget(){
+    return SizedBox(
+      height: widget.dimens.k350,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: widget.dimens.k10,
+          ),
+          Text(
+            'Pre order your book',
+            style: context.textTheme.headlineSmall?.copyWith(
+              color: Style.primaryColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(
+            height: widget.dimens.k20,
+          ),
+          Text(
+            'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
+            style: context.textTheme.bodyText2?.copyWith(
+              color: Style.textColor,
+            ),
+          ),
+
+          const Spacer(),
+
+          Container(
+            height: widget.dimens.k50,
+            width: context.width,
+            decoration: BoxDecoration(
+              color: Style.cardColor,
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(color: Style.cardColor),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Order Now',
+                    style: context.textTheme.bodyText1?.copyWith(
+                      color: Style.textColor,
+                    ),
+                  ),
+                  Text(
+                    '\$ 19.99',
+                    style: context.textTheme.bodyText1?.copyWith(
+                      color: Style.textColor,
+                    ),
+                  ),
+                ],
+              ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
+            ),
+          ),
+
+          SizedBox(
+            height: widget.dimens.k20,
+          ),
+
+        ],
+      ).addPadding(EdgeInsets.all(widget.dimens.k15)),
+    );
+  }
+
+
 }
+

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "904673995168",
+    "project_id": "memorylif-a8050",
+    "storage_bucket": "memorylif-a8050.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904673995168:android:f96872d8f64fe25c239cc5",
+        "android_client_info": {
+          "package_name": "com.android.memorylif"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904673995168-ep288r7gu7q71bg3o541g9vvm5pulg2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdTYzdfdlerv6n-T10MP6Jpaio7TdvV9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904673995168-ep288r7gu7q71bg3o541g9vvm5pulg2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
