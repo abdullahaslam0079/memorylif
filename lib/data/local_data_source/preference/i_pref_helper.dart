@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class IPrefHelper {
   String? retrieveToken();
+  void setAppStatusPremium(bool premiumStatus);
+  bool? getAppPremiumStatus();
   void saveToken(value);
   void removeToken();
   void saveBool(String key, bool value);
@@ -13,8 +15,4 @@ abstract class IPrefHelper {
 
   SharedPreferences get();
   void clear();
-
-
-
-
 }

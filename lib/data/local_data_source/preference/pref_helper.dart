@@ -75,4 +75,18 @@ class PrefHelper implements IPrefHelper {
   void saveBool(String key, bool value) {
     _pref.setBool(key, value);
   }
+
+  @override
+  bool? getAppPremiumStatus() {
+    if(_pref.containsKey('app_status_premium'))
+    {
+      return _pref.getBool('app_status_premium');
+    }
+    return false ;
+  }
+
+  @override
+  void setAppStatusPremium(bool premiumStatus) {
+    _pref.setBool('app_status_premium', premiumStatus);
+  }
 }

@@ -8,7 +8,6 @@ import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
 
-
 class TextEditorScreen extends BaseStateFullWidget {
   TextEditorScreen({Key? key}) : super(key: key);
 
@@ -17,7 +16,6 @@ class TextEditorScreen extends BaseStateFullWidget {
 }
 
 class _TextEditorState extends State<TextEditorScreen> {
-
   final GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
 
   var val = '';
@@ -37,25 +35,26 @@ class _TextEditorState extends State<TextEditorScreen> {
       body: Column(
         children: [
           FlutterSummernote(
-              hint: "Your text here...",
-              key: _keyEditor,
-              height: 400,
-              showBottomToolbar: true,
-              hasAttachment: true,
-              decoration: BoxDecoration(
-                color: Style.cardColor,
-                borderRadius: BorderRadius.circular(widget.dimens.k10),
-              ),
-              customToolbar: """
+                  hint: "Your text here...",
+                  key: _keyEditor,
+                  height: 400,
+                  showBottomToolbar: true,
+                  hasAttachment: true,
+                  decoration: BoxDecoration(
+                    color: Style.cardColor,
+                    borderRadius: BorderRadius.circular(widget.dimens.k10),
+                  ),
+                  customToolbar: """
                 [
                     ['style', ['bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']]
                 ]""",
-              returnContent: (value){
-
-              }
-          ).addPadding(EdgeInsets.only(left: widget.dimens.k15, right: widget.dimens.k15, top: widget.dimens.k15, bottom: widget.dimens.k30)),
-
+                  returnContent: (value) {})
+              .addPadding(EdgeInsets.only(
+                  left: widget.dimens.k15,
+                  right: widget.dimens.k15,
+                  top: widget.dimens.k15,
+                  bottom: widget.dimens.k30)),
           HtmlWidget(
             // the first parameter (`html`) is required
             val,
@@ -73,15 +72,15 @@ class _TextEditorState extends State<TextEditorScreen> {
             },
 
             // render a custom widget
-            customWidgetBuilder: (element) {
-
-            },
+            customWidgetBuilder: (element) {},
 
             // these callbacks are called when a complicated element is loading
             // or failed to render allowing the app to render progress indicator
             // and fallback widget
-            onErrorBuilder: (context, element, error) => Text('$element error: $error'),
-            onLoadingBuilder: (context, element, loadingProgress) => CircularProgressIndicator(),
+            onErrorBuilder: (context, element, error) =>
+                Text('$element error: $error'),
+            onLoadingBuilder: (context, element, loadingProgress) =>
+                CircularProgressIndicator(),
 
             // this callback will be triggered when user taps a link
 
@@ -92,20 +91,15 @@ class _TextEditorState extends State<TextEditorScreen> {
 
             // set the default styling for text
             textStyle: TextStyle(fontSize: 14),
-
           ),
-
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
-        onPressed: ()async{
+        onPressed: () async {
           final text = await _keyEditor.currentState?.getText();
           print('text:::: ${text}');
           val = (await _keyEditor.currentState?.getText())!;
           print('val:::: ${val}');
-
-
         },
       ),
     );

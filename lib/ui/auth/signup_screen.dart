@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
-import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/constant/Images/svgs.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/ui/auth/widgets/get_user_info_dialog_view.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
+import '../../../application/main_config/routes/route_path.dart';
 
 class SignUpScreen extends BaseStateFullWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -36,7 +38,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-
             SizedBox(
               height: widget.dimens.k50,
             ),
@@ -46,7 +47,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Style.textColor,
               ),
             ),
-
             SizedBox(
               height: widget.dimens.k50,
             ),
@@ -59,7 +59,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               height: widget.dimens.k20,
             ),
-
             Row(
               children: <Widget>[
                 Icon(
@@ -101,52 +100,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                 ),
               ),
-            ),
+            ).onTap(() {
+              widget.navigator.showCustomDialog(
+                  GetUserInfoDialogView(),
+              );
+            }),
             SizedBox(
               height: widget.dimens.k10,
             ),
-
             Container(
-                height: widget.dimens.k50,
-                width: context.width,
-                decoration: BoxDecoration(
-                  color: Style.primaryColor,
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: Style.primaryColor),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Style.whiteColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgAssets.googleIcon
-                          .addPadding(EdgeInsets.all(widget.dimens.k5)),
-                    ).addPadding(EdgeInsets.only(
-                      right: widget.dimens.k10,
-                      top: widget.dimens.k10,
-                      bottom: widget.dimens.k10,
-                    )),
-                    Text(
-                      'Continue with Google',
-                      style: context.textTheme.bodyText1?.copyWith(
-                        color: Style.whiteColor,
-                      ),
+                    height: widget.dimens.k50,
+                    width: context.width,
+                    decoration: BoxDecoration(
+                      color: Style.primaryColor,
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(color: Style.primaryColor),
                     ),
-
-                    const Spacer(),
-
-                    Text(
-                      '\$ 19.99/year',
-                      style: context.textTheme.caption?.copyWith(
-                        color: Style.whiteColor,
-                      ),
-                    ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
-
-                  ],
-                ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
-                .onTap(() {
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Style.whiteColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgAssets.googleIcon
+                              .addPadding(EdgeInsets.all(widget.dimens.k5)),
+                        ).addPadding(EdgeInsets.only(
+                          right: widget.dimens.k10,
+                          top: widget.dimens.k10,
+                          bottom: widget.dimens.k10,
+                        )),
+                        Text(
+                          'Continue with Google',
+                          style: context.textTheme.bodyText1?.copyWith(
+                            color: Style.whiteColor,
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          '\$ 19.99/year',
+                          style: context.textTheme.caption?.copyWith(
+                            color: Style.whiteColor,
+                          ),
+                        ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+                      ],
+                    ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
+                .onTap(() async {
+              await signInWithGoogle();
               widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
             }),
           ],
@@ -155,4 +155,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  Future signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    await GoogleSignIn().disconnect();
+  }
 }
+

@@ -120,24 +120,25 @@ class SectionTextFieldDecor extends BaseStateLessWidget {
                 fontWeight: FontWeight.w500,
                 fontFamily: 'Raleway'),
             errorBorder: underlineBorder
-                ? kUnderLineInputBorder()
-                : kOutlineInputBorder(),
+                ? kUnderLineInputBorder(color: Style.primaryColor)
+                : kOutlineInputBorder(color: Style.primaryColor),
             enabledBorder: underlineBorder
-                ? kUnderLineInputBorder()
-                : kOutlineInputBorder(),
+                ? kUnderLineInputBorder(color: Style.primaryColor)
+                : kOutlineInputBorder(color: Style.primaryColor),
             focusedBorder: underlineBorder
                 ? kUnderLineInputBorder(color: Style.primaryColor)
                 : kOutlineInputBorder(color: Style.primaryColor),
             border: underlineBorder
-                ? kUnderLineInputBorder()
-                : kOutlineInputBorder()),
+                ? kUnderLineInputBorder(color: Style.primaryColor)
+                : kOutlineInputBorder(color: Style.primaryColor),
+        ),
       ),
     );
   }
 
   kOutlineInputBorder({Color? color}) => OutlineInputBorder(
       borderSide: BorderSide(color: color ?? Style.whiteColor),
-      borderRadius: BorderRadius.circular(dimens.k5));
+      borderRadius: BorderRadius.circular(dimens.k25));
 }
 
 kUnderLineInputBorder({Color? color, double? borderWidth = 2}) =>

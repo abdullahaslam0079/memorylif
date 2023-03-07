@@ -55,6 +55,8 @@ class Px {
   final k170 = 170.0;
   final k175 = 175.0;
   final k180 = 180.0;
+  final k230 = 230.0;
+  final k240 = 240.0;
   final k250 = 250.0;
   final k270 = 270.0;
   final k300 = 300.0;
