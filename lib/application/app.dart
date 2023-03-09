@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/scroll_behavior.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/constant/style.dart';
@@ -23,6 +24,7 @@ class MemoryLifAppState extends State<MemoryLifApp> with BaseMixin {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppViewModel()),
+        ChangeNotifierProvider(create: (_) => BookViewModel()),
       ],
       child: MaterialApp(
         title: 'Mind Shift',

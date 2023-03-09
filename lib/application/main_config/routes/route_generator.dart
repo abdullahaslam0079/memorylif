@@ -5,7 +5,7 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case RoutePath.initialRoute:
-        return PageRouter.fadeScale(() => GetStartedScreen());
+        return PageRouter.fadeScale(() => DashboardScreen());
       case RoutePath.signUpScreen:
         return PageRouter.fadeScale(() => SignUpScreen());
         case RoutePath.alreadyHaveAccount:

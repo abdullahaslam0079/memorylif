@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "904673995168-ep288r7gu7q71bg3o541g9vvm5pulg2b.apps.googleusercontent.com",
+          "client_id": "904673995168-fao8ktdf1firjdd6bmg2k2r75doikjpa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.memorylif",
+            "certificate_hash": "875790ab5e80d0d2fdf9655bc6fc048f0e310631"
+          }
+        },
+        {
+          "client_id": "904673995168-sqp02cbiuo8gstr5r98bqo8e36bmec34.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +37,13 @@
             {
               "client_id": "904673995168-ep288r7gu7q71bg3o541g9vvm5pulg2b.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "904673995168-ec6vg4p4ceufnf1oq1nc92k09p4e12hb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ios.memorylif"
+              }
             }
           ]
         }

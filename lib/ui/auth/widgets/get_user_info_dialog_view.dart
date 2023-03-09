@@ -1,3 +1,4 @@
+import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/common/logger/log.dart';
@@ -10,6 +11,7 @@ import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:memorylif/ui/widgets/big_btn.dart';
 import 'package:memorylif/ui/widgets/section_text_field_with_decor.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constant/style.dart';
 
@@ -34,7 +36,6 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
   void initState() {
     super.initState();
     getPrefHelper();
-
   }
 
   @override
@@ -93,6 +94,8 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
                       iPrefHelper.saveUser(userData);
                       d(iPrefHelper.retrieveUser().toString());
                       widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
+                      context.read<AppViewModel>().saveUserModel(newUserData: userData);
+                      d('UserData::: ${context.read<AppViewModel>().userData}');
                     },
                     showGradient: false,
                     elevation: 0.0,
