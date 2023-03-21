@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 extension ExtensionNum on num {
@@ -115,7 +116,7 @@ extension DateHelpers on DateTime {
 
     return woy;
   }
-  // String format(String format) => DateFormat(format).format(this);
+  String format(String format) => DateFormat(format).format(this);
 
   DateTime findFirstDateOfTheWeek({DateTime? dateTime}) {
     dateTime ??= this ;

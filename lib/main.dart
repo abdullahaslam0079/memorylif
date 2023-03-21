@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:memorylif/application/main_config/main_config.dart' as config;
 import 'package:flutter/material.dart';
 import 'package:memorylif/application/main_config/routes/route_import.dart';
@@ -18,7 +20,7 @@ Future<void> main() async {
     );
     const routes = RouteGenerator.generateRoute;
     const root = MemoryLifApp(route: routes);
-  
+    await Hive.initFlutter();
     runApp(root);
   }, (error, stackTrace) async {      
     d('ZonedGuardedError:  ${error.toString()} $stackTrace');

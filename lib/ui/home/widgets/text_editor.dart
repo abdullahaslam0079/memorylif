@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_summernote/flutter_summernote.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
-import 'package:memorylif/application/main_config/routes/route_import.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
+import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/data/hive/book_content_model.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/logger/log.dart';
@@ -22,8 +25,31 @@ class TextEditorScreen extends BaseStateFullWidget {
 
 class _TextEditorState extends State<TextEditorScreen> {
   final GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
+  Box? _dailyContent;
+  BookContentModel? bookContentModel;
+
 
   var val = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Hive.registerAdapter(BookContentModelAdapter());
+  }
+
+  Future _openBox() async {
+    var dir = await getApplicationDocumentsDirectory();
+    Hive.init(dir.path);
+    _dailyContent = await Hive.openBox('dailyContent');
+    bookContentModel = BookContentModel(
+      '30-12-2022',
+      'This is flutter This is flutter This is flutter This is flutter',
+    );
+    _dailyContent!.add(bookContentModel);
+    d(_dailyContent!.get('dailyContent'));
+    return;
+  }
 
   @override
   void dispose() {
@@ -41,8 +67,9 @@ class _TextEditorState extends State<TextEditorScreen> {
       body: FlutterSummernote(
               hint: "Your text here...",
               key: _keyEditor,
-              showBottomToolbar: true,
-              hasAttachment: true,
+              height: widget.dimens.k650,
+              showBottomToolbar: false,
+              hasAttachment: false,
               decoration: BoxDecoration(
                 color: Style.cardColor,
                 borderRadius: BorderRadius.circular(widget.dimens.k10),
@@ -61,16 +88,35 @@ class _TextEditorState extends State<TextEditorScreen> {
               top: widget.dimens.k15,
               bottom: widget.dimens.k30)),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()async{
-          final text = await _keyEditor.currentState?.getText();
-          d('text:::: ${text}');
-          val = (await _keyEditor.currentState?.getText())!;
-          d('val:::: ${val}');
-          bookViewModel.updateTodayContent(content: val);
-          // widget.navigator.pushNamed(RoutePath.dashboardScreen);
+      floatingActionButton: GestureDetector(
+        onTap: ()async{
+          d('${_keyEditor.currentState?.text}');
+          final content = await _keyEditor.currentState?.getText();
+          d(content.toString());
+          bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: content!);
+          bookViewModel.updateTodayContent(content: content);
+          if(content.isNotEmpty){
+            widget.navigator.pushNamed(RoutePath.dashboardScreen);
+          }
         },
-      ),
+        child: Container(
+          height: widget.dimens.k50,
+          width: context.width,
+          decoration: BoxDecoration(
+            color: Style.primaryColor,
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(color: Style.cardColor),
+          ),
+          child: Center(
+            child: Text(
+              'That\'s It',
+              style: context.textTheme.bodyText1?.copyWith(
+                color: Colors.white,
+              ),
+            ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
+          ),
+        ),
+      ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
     );
   }
 }

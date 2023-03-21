@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
+import 'package:memorylif/common/logger/log.dart';
+import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
+import 'package:memorylif/di/di.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends BaseStateFullWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -16,8 +23,38 @@ class HomeScreen extends BaseStateFullWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  IPrefHelper iPrefHelper = inject();
+  int? _secondsUntilNewDay;
+  int _calculateSecondsUntilNewDay() {
+    DateTime now = DateTime.now();
+    DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
+    Duration duration = tomorrow.difference(now);
+    return duration.inSeconds;
+  }
+
+
+  @override
+  void initState() {
+    final bookViewModel = context.read<BookViewModel>();
+    bookViewModel.openBook();
+    _secondsUntilNewDay = _calculateSecondsUntilNewDay();
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _secondsUntilNewDay = _secondsUntilNewDay! - 1;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    int hours = _secondsUntilNewDay! ~/ 3600;
+    int minutes = (_secondsUntilNewDay! % 3600) ~/ 60;
+    int seconds = _secondsUntilNewDay! % 60;
+    String countdown = '${hours.toString().padLeft(2, '0')}:'
+        '${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
     final appViewModel = context.watch<AppViewModel>();
     final bookViewModel = context.watch<BookViewModel>();
     return Column(
@@ -28,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Text(
           // 'Hi, ${appViewModel.userData!.name.toString()}',
-          'Hi,',
+          'Hi, ${iPrefHelper.retrieveUser()['name']}',
           style: context.textTheme.headlineSmall?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -47,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: widget.dimens.k30,
         ),
         Text(
-          'Feb 19, 2023',
+          DateTime.now().format(Constants.apiDateFormat),
           style: context.textTheme.bodyMedium?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -120,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Center(
           child: Text(
-            'Time remaining: 2:40:15',
+            'Time remaining: $countdown',
             style: context.textTheme.bodyMedium?.copyWith(
               color: Style.textColor,
               fontWeight: FontWeight.w500,

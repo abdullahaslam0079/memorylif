@@ -10,6 +10,7 @@ import 'package:memorylif/ui/base/base_mixin.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:memorylif/ui/widgets/big_btn.dart';
+import 'package:memorylif/ui/widgets/flutter_toast.dart';
 import 'package:memorylif/ui/widgets/section_text_field_with_decor.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,14 +89,19 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
                   dimens.k15.verticalBoxPadding(),
                   BigBtn(
                     onTap: () {
-                      iPrefHelper.setAppStatusPremium(false);
-                      d(iPrefHelper.getAppPremiumStatus().toString());
-                      UserModel userData = UserModel(name: _nameController.text);
-                      iPrefHelper.saveUser(userData);
-                      d(iPrefHelper.retrieveUser().toString());
-                      widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
-                      context.read<AppViewModel>().saveUserModel(newUserData: userData);
-                      d('UserData::: ${context.read<AppViewModel>().userData}');
+                      if(_nameController.text.isNotEmpty){
+                        iPrefHelper.setAppStatusPremium(false);
+                        d(iPrefHelper.getAppPremiumStatus().toString());
+                        UserModel userData = UserModel(name: _nameController.text);
+                        iPrefHelper.saveUser(userData);
+                        d(iPrefHelper.retrieveUser().toString());
+                        widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
+                        context.read<AppViewModel>().saveUserModel(newUserData: userData);
+                        d('UserData::: ${context.read<AppViewModel>().userData}');
+                      }else{
+                        SectionToast.show('Please enter name');
+                      }
+
                     },
                     showGradient: false,
                     elevation: 0.0,

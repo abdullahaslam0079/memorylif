@@ -64,6 +64,7 @@ class Px {
   final k400 = 400.0;
   final k500 = 500.0;
   final k600 = 600.0;
+  final k650 = 650.0;
   final k700 = 700.0;
   double get toolBarHeight => toolBar;
 }

@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:memorylif/constant/constants.dart';
+import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
+import 'package:memorylif/data/local_data_source/preference/pref_helper.dart';
 import 'package:memorylif/services/navService/i_navigation_service.dart';
 import 'package:memorylif/services/navService/nav_service.dart';
 import 'package:memorylif/ui/utils/overlay_helper.dart';
@@ -14,6 +17,7 @@ final inject = GetIt.instance;
 Future<void> setupLocator() async {
   inject.registerSingletonAsync(() => SharedPreferences.getInstance());
   inject.registerLazySingleton<IExternalValues>(() => ExternalValues());
+  inject.registerLazySingleton<IPrefHelper>(() => PrefHelper(inject()));
   inject.registerLazySingleton<Px>(() => Px());
   inject.registerLazySingleton<Utils>(() => Utils());
 

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
+import 'package:memorylif/common/logger/log.dart';
+import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
+import 'package:memorylif/di/di.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
+import 'package:intl/intl.dart';
 
 class MyBookScreen extends BaseStateFullWidget {
   MyBookScreen({Key? key}) : super(key: key);
@@ -12,8 +17,16 @@ class MyBookScreen extends BaseStateFullWidget {
 }
 
 class _HomeScreenState extends State<MyBookScreen> {
+  IPrefHelper iPrefHelper = inject();
+
+  String getMonthName(int monthIndex) {
+    DateTime date = DateTime(DateTime.now().year, monthIndex);
+    return DateFormat('MMMM').format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
+    d('Months ${DateTime.now().month}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -21,7 +34,7 @@ class _HomeScreenState extends State<MyBookScreen> {
           height: widget.dimens.k10,
         ),
         Text(
-          'Hi, Thomas.',
+          'Hi, ${iPrefHelper.retrieveUser()['name']}',
           style: context.textTheme.headlineSmall?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -40,7 +53,7 @@ class _HomeScreenState extends State<MyBookScreen> {
           height: widget.dimens.k30,
         ),
         Text(
-          'Year 2023',
+          'Year ${DateTime.now().year}',
           style: context.textTheme.bodyMedium?.copyWith(
             color: Style.primaryColor,
             fontWeight: FontWeight.w600,
@@ -53,7 +66,7 @@ class _HomeScreenState extends State<MyBookScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: List.generate(
-                chapterNames.length,
+                DateTime.now().month,
                 (index) => Container(
                   height: widget.dimens.k40,
                   width: double.infinity,
@@ -65,7 +78,8 @@ class _HomeScreenState extends State<MyBookScreen> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          'Chapter $index ${chapterNames[index]}',
+                          getMonthName(index+1),
+                          // 'Chapter $index ${chapterNames[index]}',
                           style: context.textTheme.bodyMedium?.copyWith(
                             color: Style.primaryColor,
                             fontWeight: FontWeight.w600,
