@@ -90,13 +90,13 @@ class _TextEditorState extends State<TextEditorScreen> {
 
       floatingActionButton: GestureDetector(
         onTap: ()async{
-          d('${_keyEditor.currentState?.text}');
+          // d('${_keyEditor.currentState?.text}');
           final content = await _keyEditor.currentState?.getText();
           d(content.toString());
           bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: content!);
           bookViewModel.updateTodayContent(content: content);
           if(content.isNotEmpty){
-            widget.navigator.pushNamed(RoutePath.dashboardScreen);
+            widget.navigator.pushNamedAndRemoveUntil(RoutePath.dashboardScreen);
           }
         },
         child: Container(

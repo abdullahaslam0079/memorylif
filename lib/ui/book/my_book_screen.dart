@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
+import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/common/logger/log.dart';
-import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
 import 'package:memorylif/di/di.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../data/models/content_model.dart';
 
 class MyBookScreen extends BaseStateFullWidget {
   MyBookScreen({Key? key}) : super(key: key);
@@ -27,6 +31,9 @@ class _HomeScreenState extends State<MyBookScreen> {
   @override
   Widget build(BuildContext context) {
     d('Months ${DateTime.now().month}');
+    final daysInMonth = DateUtils.getDaysInMonth(DateTime.now().year, 3);
+    d('daysInMonth ::: $daysInMonth');
+    final bookViewModel = context.watch<BookViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -67,68 +74,98 @@ class _HomeScreenState extends State<MyBookScreen> {
             child: Column(
               children: List.generate(
                 DateTime.now().month,
-                (index) => Container(
-                  height: widget.dimens.k40,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Style.cardColor,
-                    borderRadius: BorderRadius.circular(widget.dimens.k5),
-                  ),
-                  child: Center(
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          getMonthName(index+1),
-                          // 'Chapter $index ${chapterNames[index]}',
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: Style.primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ).addPadding(EdgeInsets.symmetric(
-                            horizontal: widget.dimens.k10)),
-                      ],
+                (index) => ExpansionTile(
+                  title: Text(
+                    getMonthName(index + 1),
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: Style.primaryColor,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ).addPadding(EdgeInsets.only(bottom: widget.dimens.k5)),
+                  children: List.generate(
+                      DateTime.now().month == index + 1
+                          ? DateTime.now().day
+                          : DateUtils.getDaysInMonth(
+                              DateTime.now().year, index + 1), (i) {
+                    int date = i + 1;
+                    int month = index + 1;
+                    d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                    final content = bookViewModel.getContentFromBook(
+                        date:
+                            '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                    return ListTile(
+                      trailing: content ==null ? const Icon(Icons.block, color: Style.redColor) : const Icon(Icons.check, color: Style.primaryColor),
+                      shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(widget.dimens.k8),
+                      ),
+                      tileColor: content ==null ? Colors.white : Style.primaryColor.withOpacity(0.2),
+                      title: Text(
+                        '${getMonthName(index + 1)} ${i + 1}',
+                        style: context.textTheme.subtitle1?.copyWith(
+                          color: Style.textColor,
+                        ),
+                      ),
+                      onTap: () {
+                        int date = i + 1;
+                        int month = index + 1;
+                        d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                        final content = bookViewModel.getContentFromBook(
+                            date:
+                                '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                        d('${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}} content --- $content');
+                        widget.navigator.pushNamed(
+                          RoutePath.bookPageContent,
+                          object: ContentModel(
+                            date:
+                                '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}',
+                            textContent: content,
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                ),
               ),
-            ),
+            ).addPadding(EdgeInsets.only(bottom: widget.dimens.k5)),
           ),
         ),
         Container(
-            height: widget.dimens.k50,
-            width: context.width,
-            decoration: BoxDecoration(
-              color: Style.primaryColor,
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: Style.primaryColor),
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  FontAwesomeIcons.book,
-                  size: widget.dimens.k25,
-                  color: Style.cardColor,
-                ).addPadding(EdgeInsets.all(
-                  widget.dimens.k10,
-                )),
-                Text(
-                  'Pre order your book',
-                  style: context.textTheme.bodyText1?.copyWith(
-                    color: Style.whiteColor,
-                  ),
+                height: widget.dimens.k50,
+                width: context.width,
+                decoration: BoxDecoration(
+                  color: Style.primaryColor,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Style.primaryColor),
                 ),
-                const Spacer(),
-                Text(
-                  '\$ 19.99/year',
-                  style: context.textTheme.caption?.copyWith(
-                    color: Style.whiteColor,
-                  ),
-                ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
-              ],
-            ).addPadding(const EdgeInsets.symmetric(horizontal: 5))).onTap(() {
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FontAwesomeIcons.book,
+                      size: widget.dimens.k25,
+                      color: Style.cardColor,
+                    ).addPadding(EdgeInsets.all(
+                      widget.dimens.k10,
+                    )),
+                    Text(
+                      'Pre order your book',
+                      style: context.textTheme.bodyText1?.copyWith(
+                        color: Style.whiteColor,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '\$ 19.99/year',
+                      style: context.textTheme.caption?.copyWith(
+                        color: Style.whiteColor,
+                      ),
+                    ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
+                  ],
+                ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
+            .onTap(() {
           showModalBottomSheet(
               context: context,
-              shape: const RoundedRectangleBorder( // <-- SEE HERE
+              shape: const RoundedRectangleBorder(
+                // <-- SEE HERE
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(25.0),
                 ),
@@ -151,7 +188,7 @@ class _HomeScreenState extends State<MyBookScreen> {
     'Dedication For Dream'
   ];
 
-  Widget bottomSheetWidget(){
+  Widget bottomSheetWidget() {
     return SizedBox(
       height: widget.dimens.k350,
       child: Column(
@@ -177,9 +214,7 @@ class _HomeScreenState extends State<MyBookScreen> {
               color: Style.textColor,
             ),
           ),
-
           const Spacer(),
-
           Container(
             height: widget.dimens.k50,
             width: context.width,
@@ -208,16 +243,11 @@ class _HomeScreenState extends State<MyBookScreen> {
               ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
             ),
           ),
-
           SizedBox(
             height: widget.dimens.k20,
           ),
-
         ],
       ).addPadding(EdgeInsets.all(widget.dimens.k15)),
     );
   }
-
-
 }
-

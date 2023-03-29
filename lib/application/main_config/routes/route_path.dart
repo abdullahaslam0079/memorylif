@@ -5,6 +5,7 @@ class RoutePath {
   static const alreadyHaveAccount = '${initialRoute}alreadyHaveAccount';
   static const getStartedScreen = '${initialRoute}getStartedScreen';
   static const homeScreen = '${initialRoute}homeScreen';
+  static const bookPageContent = '${initialRoute}bookPageContent';
   static const textEditorScreen = '${initialRoute}textEditorScreen';
   static const dashboardScreen = '${initialRoute}dashboardScreen';
 }

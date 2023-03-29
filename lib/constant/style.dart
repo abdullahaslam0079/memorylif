@@ -7,6 +7,7 @@ class Style {
   static const textColor = Color(0xff1A1A1A);
   static const cardColor = Color(0xffDEE7E1);
   static const whiteColor = Color(0xffffffff);
+  static const redColor = Color(0xffEC1717);
   static const backgroundColor = whiteColor;
 
 

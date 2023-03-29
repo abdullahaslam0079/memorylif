@@ -25,7 +25,7 @@ class HomeScreen extends BaseStateFullWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   IPrefHelper iPrefHelper = inject();
-  int? _secondsUntilNewDay;
+  int? secondsUntilNewDay;
   int _calculateSecondsUntilNewDay() {
     DateTime now = DateTime.now();
     DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
@@ -38,20 +38,25 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     final bookViewModel = context.read<BookViewModel>();
     bookViewModel.openBook();
-    _secondsUntilNewDay = _calculateSecondsUntilNewDay();
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _secondsUntilNewDay = _secondsUntilNewDay! - 1;
-      });
-    });
+    secondsUntilNewDay = _calculateSecondsUntilNewDay();
+    // Timer.periodic(const Duration(seconds: 1), (timer) {
+    //   setState(() {
+    //     secondsUntilNewDay = secondsUntilNewDay! - 1;
+    //   });
+    // });
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    int hours = _secondsUntilNewDay! ~/ 3600;
-    int minutes = (_secondsUntilNewDay! % 3600) ~/ 60;
-    int seconds = _secondsUntilNewDay! % 60;
+    int hours = secondsUntilNewDay! ~/ 3600;
+    int minutes = (secondsUntilNewDay! % 3600) ~/ 60;
+    int seconds = secondsUntilNewDay! % 60;
     String countdown = '${hours.toString().padLeft(2, '0')}:'
         '${minutes.toString().padLeft(2, '0')}:'
         '${seconds.toString().padLeft(2, '0')}';
