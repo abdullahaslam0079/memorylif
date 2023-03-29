@@ -1,19 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
-import 'package:memorylif/common/logger/log.dart';
 import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
-import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
-import 'package:memorylif/di/di.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends BaseStateFullWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -23,8 +17,6 @@ class HomeScreen extends BaseStateFullWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  IPrefHelper iPrefHelper = inject();
   int? secondsUntilNewDay;
   int _calculateSecondsUntilNewDay() {
     DateTime now = DateTime.now();
@@ -32,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Duration duration = tomorrow.difference(now);
     return duration.inSeconds;
   }
-
 
   @override
   void initState() {
@@ -60,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
     String countdown = '${hours.toString().padLeft(2, '0')}:'
         '${minutes.toString().padLeft(2, '0')}:'
         '${seconds.toString().padLeft(2, '0')}';
-    final appViewModel = context.watch<AppViewModel>();
     final bookViewModel = context.watch<BookViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,8 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: widget.dimens.k10,
         ),
         Text(
-          // 'Hi, ${appViewModel.userData!.name.toString()}',
-          'Hi, ${iPrefHelper.retrieveUser()['name']}',
+          'Hi, ${widget.iPrefHelper.retrieveUser()['name']}',
           style: context.textTheme.headlineSmall?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -79,10 +68,21 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           height: widget.dimens.k10,
         ),
-        Text(
-          'Hope your day was good.',
-          style: context.textTheme.bodyMedium?.copyWith(
-            color: Style.textColor,
+        RichText(
+          text: TextSpan(
+            text: 'Have a good ',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: Style.textColor,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: widget.getDayStatus(),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Style.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(

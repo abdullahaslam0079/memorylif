@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
-import 'package:memorylif/ui/widgets/dialogs/success_dialog.dart';
 
 class MyProfileScreen extends BaseStateFullWidget {
   MyProfileScreen({Key? key}) : super(key: key);
@@ -12,6 +11,15 @@ class MyProfileScreen extends BaseStateFullWidget {
 }
 
 class _HomeScreenState extends State<MyProfileScreen> {
+  int daysLeftInMonth = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    daysLeftInMonth = DateTime(now.year, now.month + 1, 0).day - now.day;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +29,7 @@ class _HomeScreenState extends State<MyProfileScreen> {
           height: widget.dimens.k10,
         ),
         Text(
-          'Hi, Thomas.',
+          'Hi, ${widget.iPrefHelper.retrieveUser()['name']}',
           style: context.textTheme.headlineSmall?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -30,10 +38,21 @@ class _HomeScreenState extends State<MyProfileScreen> {
         SizedBox(
           height: widget.dimens.k10,
         ),
-        Text(
-          'Hope your day was good.',
-          style: context.textTheme.bodyMedium?.copyWith(
-            color: Style.textColor,
+        RichText(
+          text: TextSpan(
+            text: 'Have a good ',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: Style.textColor,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: widget.getDayStatus(),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Style.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(
@@ -72,21 +91,43 @@ class _HomeScreenState extends State<MyProfileScreen> {
             SizedBox(
               height: widget.dimens.k20,
             ),
-            Text(
-              'Your first chapter ends in 12 days.',
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: Style.textColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: widget.dimens.k20,
-            ),
-            Text(
-              'Your first chapter ends in 12 days.',
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: Style.textColor,
-                fontWeight: FontWeight.w600,
+            RichText(
+              text: TextSpan(
+                text: 'Your ',
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: Style.textColor,
+                  fontWeight: FontWeight.w600,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'March ',
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: Style.primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'chapter ends in ',
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: Style.textColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: daysLeftInMonth.twoDigits,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: Style.primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' days',
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: Style.textColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -118,7 +159,8 @@ class _HomeScreenState extends State<MyProfileScreen> {
         ).onTap(() {
           showModalBottomSheet(
               context: context,
-              shape: const RoundedRectangleBorder( // <-- SEE HERE
+              shape: const RoundedRectangleBorder(
+                // <-- SEE HERE
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(25.0),
                 ),
@@ -131,7 +173,7 @@ class _HomeScreenState extends State<MyProfileScreen> {
     ).addPadding(EdgeInsets.all(widget.dimens.k15));
   }
 
-  Widget bottomSheetWidget(){
+  Widget bottomSheetWidget() {
     return SizedBox(
       height: widget.dimens.k350,
       child: Column(
@@ -166,45 +208,40 @@ class _HomeScreenState extends State<MyProfileScreen> {
               color: Style.textColor,
             ),
           ),
-
           const Spacer(),
-
           Container(
-        height: widget.dimens.k50,
-        width: context.width,
-        decoration: BoxDecoration(
-          color: Style.primaryColor,
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: Style.cardColor),
-        ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Pay Now',
-                style: context.textTheme.bodyText1?.copyWith(
-                  color: Style.whiteColor,
-                ),
-              ),
-              Text(
-                '\$ 19.99',
-                style: context.textTheme.bodyText1?.copyWith(
-                  color: Style.whiteColor,
-                ),
-              ),
-            ],
-          ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
-        ),
-      ),
-
+            height: widget.dimens.k50,
+            width: context.width,
+            decoration: BoxDecoration(
+              color: Style.primaryColor,
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(color: Style.cardColor),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Pay Now',
+                    style: context.textTheme.bodyText1?.copyWith(
+                      color: Style.whiteColor,
+                    ),
+                  ),
+                  Text(
+                    '\$ 19.99',
+                    style: context.textTheme.bodyText1?.copyWith(
+                      color: Style.whiteColor,
+                    ),
+                  ),
+                ],
+              ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
+            ),
+          ),
           SizedBox(
             height: widget.dimens.k20,
           ),
-
         ],
       ).addPadding(EdgeInsets.all(widget.dimens.k15)),
     );
   }
-
 }

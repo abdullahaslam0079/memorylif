@@ -21,7 +21,6 @@ class MyBookScreen extends BaseStateFullWidget {
 }
 
 class _HomeScreenState extends State<MyBookScreen> {
-  IPrefHelper iPrefHelper = inject();
 
   String getMonthName(int monthIndex) {
     DateTime date = DateTime(DateTime.now().year, monthIndex);
@@ -41,7 +40,7 @@ class _HomeScreenState extends State<MyBookScreen> {
           height: widget.dimens.k10,
         ),
         Text(
-          'Hi, ${iPrefHelper.retrieveUser()['name']}',
+          'Hi, ${widget.iPrefHelper.retrieveUser()['name']}',
           style: context.textTheme.headlineSmall?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -50,10 +49,21 @@ class _HomeScreenState extends State<MyBookScreen> {
         SizedBox(
           height: widget.dimens.k10,
         ),
-        Text(
-          'Hope your day was good.',
-          style: context.textTheme.bodyMedium?.copyWith(
-            color: Style.textColor,
+        RichText(
+          text: TextSpan(
+            text: 'Have a good ',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: Style.textColor,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: widget.getDayStatus(),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Style.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(
