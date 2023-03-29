@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_summernote/flutter_summernote.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -27,15 +28,26 @@ class _TextEditorState extends State<TextEditorScreen> {
   final GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
   Box? _dailyContent;
   BookContentModel? bookContentModel;
-
-
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   var val = '';
+
+  getSetFirebaseContent()async{
+    await users.doc('abdullah@gmail.com').collection('March').doc('29-03-2023').set({
+      'content': 'This is Flutter This is Flutter This is Flutter This is Flutter This is Flutter This is Flutter',
+    });
+    final content = await users.doc('abdullah@gmail.com').collection('March').doc('29-03-2023').get();
+    d('FireBase Content ::: $content');
+    d('FireBase content.data() ::: ${content.data()}');
+    d('FireBase content.metadata ::: ${content.metadata}');
+    d('FireBase content.reference ::: ${content.reference}');
+    d('FireBase content.get(content) ::: ${content.get('content')}');
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // Hive.registerAdapter(BookContentModelAdapter());
+    getSetFirebaseContent();
+
   }
 
   Future _openBox() async {
@@ -90,7 +102,6 @@ class _TextEditorState extends State<TextEditorScreen> {
 
       floatingActionButton: GestureDetector(
         onTap: ()async{
-          // d('${_keyEditor.currentState?.text}');
           final content = await _keyEditor.currentState?.getText();
           d(content.toString());
           bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: content!);
