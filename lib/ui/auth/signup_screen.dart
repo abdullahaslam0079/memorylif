@@ -1,14 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/constant/Images/svgs.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/data/models/user_model.dart';
 import 'package:memorylif/ui/auth/widgets/get_user_info_dialog_view.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
+import 'package:memorylif/ui/widgets/flutter_toast.dart';
+import 'package:provider/provider.dart';
 import '../../../application/main_config/routes/route_path.dart';
+import '../../application/app_view_model.dart';
+import '../../common/logger/log.dart';
 
 class SignUpScreen extends BaseStateFullWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -158,7 +164,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    await GoogleSignIn().disconnect();
+    if(googleUser != null){
+      widget.iPrefHelper.setAppStatusPremium(true);
+      d(widget.iPrefHelper.getAppPremiumStatus().toString());
+      UserModel userData = UserModel(name: googleUser.displayName, email: googleUser.email);
+      await writeUserDataOnFirebase(email: googleUser.email, name: googleUser.displayName ?? '');
+      widget.iPrefHelper.saveUser(userData);
+      d(widget.iPrefHelper.retrieveUser().toString());
+      widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
+      await GoogleSignIn().disconnect();
+    }else{
+      SectionToast.show('Something went wrong');
+    }
   }
+
+  writeUserDataOnFirebase({required String email, required String name})async{
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    await users.doc(email).set({
+      'email': email,
+      'name': name,
+      'isPremium': true
+    });
+  }
+
 }
 

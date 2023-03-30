@@ -14,7 +14,6 @@ import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common/logger/log.dart';
 
 class TextEditorScreen extends BaseStateFullWidget {
@@ -28,14 +27,17 @@ class _TextEditorState extends State<TextEditorScreen> {
   final GlobalKey<FlutterSummernoteState> _keyEditor = GlobalKey();
   Box? _dailyContent;
   BookContentModel? bookContentModel;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference users = FirebaseFirestore.instance.collection('content');
   var val = '';
 
-  getSetFirebaseContent()async{
-    await users.doc('abdullah@gmail.com').collection('March').doc('29-03-2023').set({
-      'content': 'This is Flutter This is Flutter This is Flutter This is Flutter This is Flutter This is Flutter',
-    });
-    final content = await users.doc('abdullah@gmail.com').collection('March').doc('29-03-2023').get();
+  getSetFirebaseContent({required String todayContent}) async {
+    await users.doc(widget.iPrefHelper.retrieveUser()['email']).collection(getMonthName(DateTime.now().month)).doc(DateTime.now().format(Constants.apiDateFormat))
+        .set({'content': todayContent});
+    final content = await users
+        .doc(widget.iPrefHelper.retrieveUser()['email'])
+        .collection(getMonthName(DateTime.now().month))
+        .doc(DateTime.now().format(Constants.apiDateFormat))
+        .get();
     d('FireBase Content ::: $content');
     d('FireBase content.data() ::: ${content.data()}');
     d('FireBase content.metadata ::: ${content.metadata}');
@@ -43,24 +45,18 @@ class _TextEditorState extends State<TextEditorScreen> {
     d('FireBase content.get(content) ::: ${content.get('content')}');
   }
 
+  checkIfTodayContentExist() {
+    final bookViewModel = context.read<BookViewModel>();
+    if (bookViewModel.todayContent != null) {
+      d('TODAY ALREADY CONTENT ::: ${bookViewModel.todayContent}');
+      _keyEditor.currentState?.text = bookViewModel.todayContent!;
+      d('After...... ${_keyEditor.currentState?.text}');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    getSetFirebaseContent();
-
-  }
-
-  Future _openBox() async {
-    var dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
-    _dailyContent = await Hive.openBox('dailyContent');
-    bookContentModel = BookContentModel(
-      '30-12-2022',
-      'This is flutter This is flutter This is flutter This is flutter',
-    );
-    _dailyContent!.add(bookContentModel);
-    d(_dailyContent!.get('dailyContent'));
-    return;
   }
 
   @override
@@ -91,22 +87,25 @@ class _TextEditorState extends State<TextEditorScreen> {
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['font', ['strikethrough', 'superscript', 'subscript']]
             ]""",
-              returnContent: (value) {
-
-              })
+              returnContent: (value) {})
           .addPadding(EdgeInsets.only(
               left: widget.dimens.k15,
               right: widget.dimens.k15,
               top: widget.dimens.k15,
               bottom: widget.dimens.k30)),
-
       floatingActionButton: GestureDetector(
-        onTap: ()async{
+        onTap: () async {
           final content = await _keyEditor.currentState?.getText();
           d(content.toString());
-          bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: content!);
+          bookViewModel.putContentInBook(
+              date: DateTime.now().format(Constants.apiDateFormat),
+              textContent: content!);
           bookViewModel.updateTodayContent(content: content);
-          if(content.isNotEmpty){
+          if (content.isNotEmpty) {
+            d('getAppPremiumStatus() ${widget.iPrefHelper.getAppPremiumStatus()}');
+            if (widget.iPrefHelper.getAppPremiumStatus() == true) {
+              await getSetFirebaseContent(todayContent: content);
+            }
             widget.navigator.pushNamedAndRemoveUntil(RoutePath.dashboardScreen);
           }
         },

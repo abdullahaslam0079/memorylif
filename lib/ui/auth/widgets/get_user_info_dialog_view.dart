@@ -3,17 +3,13 @@ import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/common/logger/log.dart';
 import 'package:memorylif/constant/constants.dart';
-import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
-import 'package:memorylif/data/local_data_source/preference/pref_helper.dart';
 import 'package:memorylif/data/models/user_model.dart';
-import 'package:memorylif/ui/base/base_mixin.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:memorylif/ui/widgets/big_btn.dart';
 import 'package:memorylif/ui/widgets/flutter_toast.dart';
 import 'package:memorylif/ui/widgets/section_text_field_with_decor.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constant/style.dart';
 
 class GetUserInfoDialogView extends BaseStateFullWidget{
@@ -23,20 +19,14 @@ class GetUserInfoDialogView extends BaseStateFullWidget{
   State<GetUserInfoDialogView> createState() => _GetUserInfoDialogViewState();
 }
 
-class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with BaseMixin{
+class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView>{
 
   final TextEditingController _nameController = TextEditingController();
 
-  late final IPrefHelper iPrefHelper;
-
-  getPrefHelper()async{
-    iPrefHelper = PrefHelper(await SharedPreferences.getInstance());
-  }
 
   @override
   void initState() {
     super.initState();
-    getPrefHelper();
   }
 
   @override
@@ -52,7 +42,7 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
             color: Colors.white,
             elevation: 4.0,
             child: SizedBox(
-              height: dimens.k230,
+              height: widget.dimens.k230,
               child: Column(
                 children: <Widget>[
                   Row(
@@ -81,20 +71,20 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
                       })
                     ],
                   ),
-                  dimens.k30.verticalBoxPadding(),
+                  widget.dimens.k30.verticalBoxPadding(),
                   SectionTextFieldDecor(
                     hintText: 'Name',
                     controller: _nameController,
                   ),
-                  dimens.k15.verticalBoxPadding(),
+                  widget.dimens.k15.verticalBoxPadding(),
                   BigBtn(
                     onTap: () {
                       if(_nameController.text.isNotEmpty){
-                        iPrefHelper.setAppStatusPremium(false);
-                        d(iPrefHelper.getAppPremiumStatus().toString());
+                        widget.iPrefHelper.setAppStatusPremium(false);
+                        d(widget.iPrefHelper.getAppPremiumStatus().toString());
                         UserModel userData = UserModel(name: _nameController.text);
-                        iPrefHelper.saveUser(userData);
-                        d(iPrefHelper.retrieveUser().toString());
+                        widget.iPrefHelper.saveUser(userData);
+                        d(widget.iPrefHelper.retrieveUser().toString());
                         widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
                         context.read<AppViewModel>().saveUserModel(newUserData: userData);
                         d('UserData::: ${context.read<AppViewModel>().userData}');
@@ -105,7 +95,7 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
                     },
                     showGradient: false,
                     elevation: 0.0,
-                    radius: dimens.k25,
+                    radius: widget.dimens.k25,
                     child: Text(
                       'Continue',
                       style: context.textTheme.subtitle1?.copyWith(
@@ -117,7 +107,7 @@ class _GetUserInfoDialogViewState extends State<GetUserInfoDialogView> with Base
                     ),
                   ),
                 ],
-              ).addPadding(EdgeInsets.all(dimens.k20)),
+              ).addPadding(EdgeInsets.all(widget.dimens.k20)),
             ),
           ),
         ),

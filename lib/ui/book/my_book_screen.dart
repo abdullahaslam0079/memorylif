@@ -1,14 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
 import 'package:memorylif/common/logger/log.dart';
+import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
-import 'package:memorylif/data/local_data_source/preference/i_pref_helper.dart';
-import 'package:memorylif/di/di.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../data/models/content_model.dart';
@@ -22,16 +22,22 @@ class MyBookScreen extends BaseStateFullWidget {
 
 class _HomeScreenState extends State<MyBookScreen> {
 
-  String getMonthName(int monthIndex) {
-    DateTime date = DateTime(DateTime.now().year, monthIndex);
-    return DateFormat('MMMM').format(date);
+  getUserContentFromFirebase()async{
+    CollectionReference users = FirebaseFirestore.instance.collection('content');
+    final userContent =  await users.doc(widget.iPrefHelper.retrieveUser()['email']).get();
+    d('userContent:::::: $userContent');
   }
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    d('Months ${DateTime.now().month}');
     final daysInMonth = DateUtils.getDaysInMonth(DateTime.now().year, 3);
-    d('daysInMonth ::: $daysInMonth');
     final bookViewModel = context.watch<BookViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +105,7 @@ class _HomeScreenState extends State<MyBookScreen> {
                               DateTime.now().year, index + 1), (i) {
                     int date = i + 1;
                     int month = index + 1;
-                    d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                    // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
                     final content = bookViewModel.getContentFromBook(
                         date:
                             '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
@@ -118,7 +124,7 @@ class _HomeScreenState extends State<MyBookScreen> {
                       onTap: () {
                         int date = i + 1;
                         int month = index + 1;
-                        d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                        // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
                         final content = bookViewModel.getContentFromBook(
                             date:
                                 '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');

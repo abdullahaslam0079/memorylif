@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 
 extension SizeExt on double {
   SizedBox verticalBoxPadding() => SizedBox(height: this);
   SizedBox horizontalBoxPadding() => SizedBox(width: this);
+}
+
+String getMonthName(int monthIndex) {
+  DateTime date = DateTime(DateTime.now().year, monthIndex);
+  return DateFormat('MMMM').format(date);
 }
 
 class Px {

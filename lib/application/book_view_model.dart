@@ -26,7 +26,7 @@ class BookViewModel extends BaseViewModel {
 
   getContentFromBook({required String date}) {
     var content = myBook?.get(date);
-    d('$date content... $content');
+    // d('$date content... $content');
     return content;
   }
 }
