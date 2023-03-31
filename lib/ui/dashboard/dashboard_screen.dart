@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
@@ -8,6 +9,7 @@ import 'package:memorylif/ui/home/home_screen.dart';
 import 'package:memorylif/ui/profile/my_profile_screen.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
+import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class DashboardScreen extends BaseStateFullWidget {
@@ -19,6 +21,18 @@ class DashboardScreen extends BaseStateFullWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0;
+
+  setLocalDb()async{
+    final bookViewModel = context.read<BookViewModel>();
+    await bookViewModel.openBook();
+    await bookViewModel.FetchDataFromFirebase();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setLocalDb();
+  }
 
   @override
   Widget build(BuildContext context) {

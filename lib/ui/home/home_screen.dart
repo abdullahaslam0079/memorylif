@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
+import 'package:memorylif/common/logger/log.dart';
 import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
@@ -25,16 +27,39 @@ class _HomeScreenState extends State<HomeScreen> {
     return duration.inSeconds;
   }
 
+  bool isLoading = false;
+  String? todayContent;
+
+  checkTodayContentData()async{
+    BookViewModel bookViewModel = context.read<BookViewModel>();
+    if(widget.iPrefHelper.getAppPremiumStatus() == true){
+      setState(() {
+        isLoading = true;
+      });
+      final users = FirebaseFirestore.instance.collection('content').doc(widget.iPrefHelper.retrieveUser()['email']);
+      final userContent =  await users.collection(getMonthName(DateTime.now().month)).doc(DateTime.now().format(Constants.apiDateFormat)).get();
+      d('Today Content--- ${userContent.exists}');
+      if(userContent.exists){
+        todayContent = userContent.get('content');
+        bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: todayContent.toString());
+      }
+      setState(() {
+        isLoading = false;
+      });
+    }else{
+      todayContent = bookViewModel.getContentFromBook(date: DateTime.now().format(Constants.apiDateFormat));
+    }
+  }
+
   @override
   void initState() {
-    final bookViewModel = context.read<BookViewModel>();
-    bookViewModel.openBook();
     secondsUntilNewDay = _calculateSecondsUntilNewDay();
     // Timer.periodic(const Duration(seconds: 1), (timer) {
     //   setState(() {
     //     secondsUntilNewDay = secondsUntilNewDay! - 1;
     //   });
     // });
+    checkTodayContentData();
     super.initState();
   }
 
@@ -105,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(10),
               color: Style.cardColor,
             ),
-            child: bookViewModel.todayContent == null
+            child: todayContent == null ||  todayContent!.isEmpty
                 ? Text(
                     'What amazing did you do today?\nWrite 400 characters.',
                     style: context.textTheme.bodyMedium?.copyWith(
@@ -113,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ).addPadding(EdgeInsets.all(widget.dimens.k15))
                 : HtmlWidget(
-                    bookViewModel.todayContent.toString(),
+                    todayContent.toString(),
                     customStylesBuilder: (element) {
                       if (element.classes.contains('foo')) {
                         return {'color': 'red'};

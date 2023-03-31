@@ -12,7 +12,6 @@ import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../common/logger/log.dart';
 
@@ -130,41 +129,3 @@ class _TextEditorState extends State<TextEditorScreen> {
     );
   }
 }
-
-/*HtmlWidget(
-            // the first parameter (`html`) is required
-            val,
-
-            // all other parameters are optional, a few notable params:
-
-            // specify custom styling for an element
-            // see supported inline styling below
-            customStylesBuilder: (element) {
-              if (element.classes.contains('foo')) {
-                return {'color': 'red'};
-              }
-
-              return null;
-            },
-
-            // render a custom widget
-            customWidgetBuilder: (element) {},
-
-            // these callbacks are called when a complicated element is loading
-            // or failed to render allowing the app to render progress indicator
-            // and fallback widget
-            onErrorBuilder: (context, element, error) =>
-                Text('$element error: $error'),
-            onLoadingBuilder: (context, element, loadingProgress) =>
-                CircularProgressIndicator(),
-
-            // this callback will be triggered when user taps a link
-
-            // select the render mode for HTML body
-            // by default, a simple `Column` is rendered
-            // consider using `ListView` or `SliverList` for better performance
-            renderMode: RenderMode.column,
-
-            // set the default styling for text
-            textStyle: TextStyle(fontSize: 14),
-          ),*/

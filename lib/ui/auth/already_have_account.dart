@@ -99,8 +99,6 @@ class _SignUpScreenState extends State<AlreadyHaveAccount> {
                         ],
                       ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
                   .onTap(() {
-                widget.navigator
-                    .pushReplacementNamed(RoutePath.dashboardScreen);
               }),
               SizedBox(
                 height: widget.dimens.k10,

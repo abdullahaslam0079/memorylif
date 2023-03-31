@@ -8,9 +8,7 @@ import 'package:memorylif/common/logger/log.dart';
 import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
-
 import 'package:provider/provider.dart';
-
 import '../../data/models/content_model.dart';
 
 class MyBookScreen extends BaseStateFullWidget {
@@ -21,19 +19,36 @@ class MyBookScreen extends BaseStateFullWidget {
 }
 
 class _HomeScreenState extends State<MyBookScreen> {
+  bool isLoading = false;
 
-  getUserContentFromFirebase()async{
-    CollectionReference users = FirebaseFirestore.instance.collection('content');
-    final userContent =  await users.doc(widget.iPrefHelper.retrieveUser()['email']).get();
-    d('userContent:::::: $userContent');
-  }
-
+  // setData()async{
+  //   if(widget.iPrefHelper.getAppPremiumStatus() == true){
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //     BookViewModel bookViewModel = context.read<BookViewModel>();
+  //     final users = FirebaseFirestore.instance.collection('content').doc(widget.iPrefHelper.retrieveUser()['email']);
+  //     for(int month = 1; month<=DateTime.now().month; month++){
+  //       for(int date = 1; date <= DateUtils.getDaysInMonth(DateTime.now().year, month); date++){
+  //         d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+  //         String nDate = '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}';
+  //         final userContent =  await users.collection(getMonthName(month)).doc(nDate).get();
+  //         if(userContent.exists){
+  //           d(userContent.exists);
+  //           bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: userContent.get('content'));
+  //         }
+  //       }
+  //     }
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,64 +101,81 @@ class _HomeScreenState extends State<MyBookScreen> {
           height: widget.dimens.k10,
         ),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: List.generate(
-                DateTime.now().month,
-                (index) => ExpansionTile(
-                  title: Text(
-                    getMonthName(index + 1),
-                    style: context.textTheme.bodyMedium?.copyWith(
+          child: bookViewModel.bookContentFetchStatus ==
+                  BookContentFetchStatus.loading
+              ? Center(
+                  child: Text(
+                    'Loading data from server...',
+                    style: context.textTheme.headlineSmall?.copyWith(
                       color: Style.primaryColor,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  children: List.generate(
-                      DateTime.now().month == index + 1
-                          ? DateTime.now().day
-                          : DateUtils.getDaysInMonth(
-                              DateTime.now().year, index + 1), (i) {
-                    int date = i + 1;
-                    int month = index + 1;
-                    // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
-                    final content = bookViewModel.getContentFromBook(
-                        date:
-                            '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
-                    return ListTile(
-                      trailing: content ==null ? const Icon(Icons.block, color: Style.redColor) : const Icon(Icons.check, color: Style.primaryColor),
-                      shape: BeveledRectangleBorder(
-                        borderRadius: BorderRadius.circular(widget.dimens.k8),
-                      ),
-                      tileColor: content ==null ? Colors.white : Style.primaryColor.withOpacity(0.2),
-                      title: Text(
-                        '${getMonthName(index + 1)} ${i + 1}',
-                        style: context.textTheme.subtitle1?.copyWith(
-                          color: Style.textColor,
-                        ),
-                      ),
-                      onTap: () {
-                        int date = i + 1;
-                        int month = index + 1;
-                        // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
-                        final content = bookViewModel.getContentFromBook(
-                            date:
-                                '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
-                        d('${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}} content --- $content');
-                        widget.navigator.pushNamed(
-                          RoutePath.bookPageContent,
-                          object: ContentModel(
-                            date:
-                                '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}',
-                            textContent: content,
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: List.generate(
+                      DateTime.now().month,
+                      (index) => ExpansionTile(
+                        title: Text(
+                          getMonthName(index + 1),
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: Style.primaryColor,
+                            fontWeight: FontWeight.w600,
                           ),
-                        );
-                      },
-                    );
-                  }),
+                        ),
+                        children: List.generate(
+                            DateTime.now().month == index + 1
+                                ? DateTime.now().day
+                                : DateUtils.getDaysInMonth(
+                                    DateTime.now().year, index + 1), (i) {
+                          int date = i + 1;
+                          int month = index + 1;
+                          // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                          final content = bookViewModel.getContentFromBook(
+                              date:
+                                  '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                          return ListTile(
+                            trailing: content == null
+                                ? const Icon(Icons.block, color: Style.redColor)
+                                : const Icon(Icons.check,
+                                    color: Style.primaryColor),
+                            shape: BeveledRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(widget.dimens.k8),
+                            ),
+                            tileColor: content == null
+                                ? Colors.white
+                                : Style.primaryColor.withOpacity(0.2),
+                            title: Text(
+                              '${getMonthName(index + 1)} ${i + 1}',
+                              style: context.textTheme.subtitle1?.copyWith(
+                                color: Style.textColor,
+                              ),
+                            ),
+                            onTap: () {
+                              int date = i + 1;
+                              int month = index + 1;
+                              // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                              final content = bookViewModel.getContentFromBook(
+                                  date:
+                                      '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                              d('${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}} content --- $content');
+                              widget.navigator.pushNamed(
+                                RoutePath.bookPageContent,
+                                object: ContentModel(
+                                  date:
+                                      '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}',
+                                  textContent: content,
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                      ),
+                    ),
+                  ).addPadding(EdgeInsets.only(bottom: widget.dimens.k5)),
                 ),
-              ),
-            ).addPadding(EdgeInsets.only(bottom: widget.dimens.k5)),
-          ),
         ),
         Container(
                 height: widget.dimens.k50,
