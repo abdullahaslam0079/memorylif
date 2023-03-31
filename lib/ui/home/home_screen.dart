@@ -30,24 +30,36 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   String? todayContent;
 
-  checkTodayContentData()async{
+  checkTodayContentData() async {
     BookViewModel bookViewModel = context.read<BookViewModel>();
-    if(widget.iPrefHelper.getAppPremiumStatus() == true){
+    if (widget.iPrefHelper.getAppPremiumStatus() == true) {
       setState(() {
         isLoading = true;
       });
-      final users = FirebaseFirestore.instance.collection('content').doc(widget.iPrefHelper.retrieveUser()['email']);
-      final userContent =  await users.collection(getMonthName(DateTime.now().month)).doc(DateTime.now().format(Constants.apiDateFormat)).get();
+      final users = FirebaseFirestore.instance
+          .collection('content')
+          .doc(widget.iPrefHelper.retrieveUser()['email']);
+      final userContent = await users
+          .collection(getMonthName(DateTime.now().month))
+          .doc(DateTime.now().format(Constants.apiDateFormat))
+          .get();
       d('Today Content--- ${userContent.exists}');
-      if(userContent.exists){
+      if (userContent.exists) {
         todayContent = userContent.get('content');
-        bookViewModel.putContentInBook(date: DateTime.now().format(Constants.apiDateFormat), textContent: todayContent.toString());
+        bookViewModel.putContentInBook(
+            date: DateTime.now().format(Constants.apiDateFormat),
+            textContent: todayContent.toString());
       }
       setState(() {
         isLoading = false;
       });
-    }else{
-      todayContent = bookViewModel.getContentFromBook(date: DateTime.now().format(Constants.apiDateFormat));
+    } else {
+      await bookViewModel.openBook();
+      todayContent = bookViewModel.getContentFromBook(
+          date: DateTime.now().format(Constants.apiDateFormat));
+      setState(() {
+
+      });
     }
   }
 
@@ -130,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(10),
               color: Style.cardColor,
             ),
-            child: todayContent == null ||  todayContent!.isEmpty
+            child: todayContent == null || todayContent!.isEmpty
                 ? Text(
                     'What amazing did you do today?\nWrite 400 characters.',
                     style: context.textTheme.bodyMedium?.copyWith(

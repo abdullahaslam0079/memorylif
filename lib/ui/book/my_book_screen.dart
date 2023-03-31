@@ -156,10 +156,11 @@ class _HomeScreenState extends State<MyBookScreen> {
                             onTap: () {
                               int date = i + 1;
                               int month = index + 1;
-                              // d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                              d('Date:::: ${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
                               final content = bookViewModel.getContentFromBook(
                                   date:
                                       '${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}');
+                              d('contentcontent..... $content');
                               d('${date.twoDigits}-${month.twoDigits}-${DateTime.now().year}} content --- $content');
                               widget.navigator.pushNamed(
                                 RoutePath.bookPageContent,

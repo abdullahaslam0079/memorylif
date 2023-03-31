@@ -1,12 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
+import 'package:memorylif/common/logger/log.dart';
 import 'package:memorylif/constant/Images/svgs.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/data/models/user_model.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
+import 'package:memorylif/ui/widgets/flutter_toast.dart';
 
 class AlreadyHaveAccount extends BaseStateFullWidget {
   AlreadyHaveAccount({Key? key}) : super(key: key);
@@ -99,6 +104,7 @@ class _SignUpScreenState extends State<AlreadyHaveAccount> {
                         ],
                       ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
                   .onTap(() {
+                signInWithGoogle();
               }),
               SizedBox(
                 height: widget.dimens.k10,
@@ -107,5 +113,37 @@ class _SignUpScreenState extends State<AlreadyHaveAccount> {
             horizontal: widget.dimens.k15, vertical: widget.dimens.k30)),
       ),
     );
+  }
+
+  Future signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if(googleUser != null){
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
+      final doc = await users.doc(googleUser.email).get();
+      if(doc.exists){
+        widget.iPrefHelper.setAppStatusPremium(true);
+        d(widget.iPrefHelper.getAppPremiumStatus().toString());
+        UserModel userData = UserModel(name: googleUser.displayName, email: googleUser.email);
+        await writeUserDataOnFirebase(email: googleUser.email, name: googleUser.displayName ?? '');
+        widget.iPrefHelper.saveUser(userData);
+        d(widget.iPrefHelper.retrieveUser().toString());
+        widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
+        await GoogleSignIn().disconnect();
+      }else{
+        SectionToast.show('User with ${googleUser.email} does\'t exist');
+        await GoogleSignIn().disconnect();
+      }
+    }else{
+      SectionToast.show('Something went wrong');
+    }
+  }
+
+  writeUserDataOnFirebase({required String email, required String name})async{
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    await users.doc(email).set({
+      'email': email,
+      'name': name,
+      'isPremium': true
+    });
   }
 }

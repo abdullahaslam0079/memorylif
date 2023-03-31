@@ -99,7 +99,6 @@ class _TextEditorState extends State<TextEditorScreen> {
           bookViewModel.putContentInBook(
               date: DateTime.now().format(Constants.apiDateFormat),
               textContent: content!);
-          bookViewModel.updateTodayContent(content: content);
           if (content.isNotEmpty) {
             d('getAppPremiumStatus() ${widget.iPrefHelper.getAppPremiumStatus()}');
             if (widget.iPrefHelper.getAppPremiumStatus() == true) {

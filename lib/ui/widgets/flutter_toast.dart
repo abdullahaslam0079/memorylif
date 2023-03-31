@@ -1,5 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:flutter/material.dart';
 
 class SectionToast {
   static show(String? msg){
@@ -9,7 +10,7 @@ class SectionToast {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Style.backgroundColor,
-        textColor: Style.primaryColor,
+        textColor: Colors.black,
         fontSize: 16.0
     );
   }

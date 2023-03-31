@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/ui/auth/widgets/get_user_info_dialog_view.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 
 class MyProfileScreen extends BaseStateFullWidget {
@@ -28,12 +29,33 @@ class _HomeScreenState extends State<MyProfileScreen> {
         SizedBox(
           height: widget.dimens.k10,
         ),
-        Text(
-          'Hi, ${widget.iPrefHelper.retrieveUser()['name']}',
-          style: context.textTheme.headlineSmall?.copyWith(
-            color: Style.textColor,
-            fontWeight: FontWeight.w600,
-          ),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                'Hi, ${widget.iPrefHelper.retrieveUser()['name']}',
+                style: context.textTheme.headlineSmall?.copyWith(
+                  color: Style.textColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            // Container(
+            //   height: widget.dimens.k25,
+            //   width: widget.dimens.k25,
+            //   decoration: BoxDecoration(
+            //     color: Style.primaryColor.withOpacity(0.2),
+            //     shape: BoxShape.circle,
+            //   ),
+            //   child: Icon(
+            //     Icons.edit,
+            //     color: Style.primaryColor,
+            //     size: widget.dimens.k15,
+            //   ),
+            // ).onTap(() {
+            //   widget.navigator.showCustomDialog(GetUserInfoDialogView());
+            // }),
+          ],
         ),
         SizedBox(
           height: widget.dimens.k10,
