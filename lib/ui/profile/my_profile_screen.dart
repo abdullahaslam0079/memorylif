@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
+import 'package:memorylif/application/main_config/routes/route_path.dart';
+import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/auth/widgets/get_user_info_dialog_view.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
+import 'package:memorylif/ui/payment/cash/payment_page.dart';
+import 'package:provider/provider.dart';
 
 class MyProfileScreen extends BaseStateFullWidget {
   MyProfileScreen({Key? key}) : super(key: key);
@@ -23,6 +28,7 @@ class _HomeScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appViewModel = context.watch<AppViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -81,7 +87,7 @@ class _HomeScreenState extends State<MyProfileScreen> {
           height: widget.dimens.k50,
         ),
         Text(
-          'Here is your stats',
+          'Here is stats',
           style: context.textTheme.headlineSmall?.copyWith(
             color: Style.textColor,
             fontWeight: FontWeight.w600,
@@ -93,26 +99,26 @@ class _HomeScreenState extends State<MyProfileScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'You have\'nt written for 3 days in total.',
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: Style.textColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: widget.dimens.k20,
-            ),
-            Text(
-              'Your record is write of 10 days in a row, keep it up!',
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: Style.textColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: widget.dimens.k20,
-            ),
+            // Text(
+            //   'You have\'nt written for 3 days in total.',
+            //   style: context.textTheme.bodyLarge?.copyWith(
+            //     color: Style.textColor,
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: widget.dimens.k20,
+            // ),
+            // Text(
+            //   'Your record is write of 10 days in a row, keep it up!',
+            //   style: context.textTheme.bodyLarge?.copyWith(
+            //     color: Style.textColor,
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: widget.dimens.k20,
+            // ),
             RichText(
               text: TextSpan(
                 text: 'Your ',
@@ -122,14 +128,14 @@ class _HomeScreenState extends State<MyProfileScreen> {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'March ',
+                    text: getMonthName(DateTime.now().month),
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: Style.primaryColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   TextSpan(
-                    text: 'chapter ends in ',
+                    text: ' chapter ends in ',
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: Style.textColor,
                       fontWeight: FontWeight.w600,
@@ -170,7 +176,7 @@ class _HomeScreenState extends State<MyProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'You are using premium version',
+                  appViewModel.userData!.isPremiumUser == true ? 'You are using premium version' : 'Become a premium user',
                   style: context.textTheme.bodyText1?.copyWith(
                     color: Style.textColor,
                   ),
@@ -179,17 +185,23 @@ class _HomeScreenState extends State<MyProfileScreen> {
             ),
           ),
         ).onTap(() {
-          showModalBottomSheet(
-              context: context,
-              shape: const RoundedRectangleBorder(
-                // <-- SEE HERE
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(25.0),
+
+          if(appViewModel.userData!.isPremiumUser == true){
+
+          }else{
+            showModalBottomSheet(
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  // <-- SEE HERE
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(25.0),
+                  ),
                 ),
-              ),
-              builder: (context) {
-                return bottomSheetWidget();
-              });
+                builder: (context) {
+                  return bottomSheetWidget();
+                });
+          }
+
         }),
       ],
     ).addPadding(EdgeInsets.all(widget.dimens.k15));
@@ -250,7 +262,7 @@ class _HomeScreenState extends State<MyProfileScreen> {
                     ),
                   ),
                   Text(
-                    '\$ 19.99',
+                    '\$ 20.00',
                     style: context.textTheme.bodyText1?.copyWith(
                       color: Style.whiteColor,
                     ),
@@ -258,7 +270,9 @@ class _HomeScreenState extends State<MyProfileScreen> {
                 ],
               ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
             ),
-          ),
+          ).onTap(() {
+            widget.navigator.pushNamed(RoutePath.paymentPage, object: PaymentMethodModel(isSignUp: true, amount: 20.0));
+          }),
           SizedBox(
             height: widget.dimens.k20,
           ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/application/main_config/routes/route_path.dart';
@@ -8,6 +9,8 @@ import 'package:memorylif/common/logger/log.dart';
 import 'package:memorylif/constant/constants.dart';
 import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
+import 'package:memorylif/ui/payment/cash/payment_page.dart';
+import 'package:memorylif/ui/widgets/flutter_toast.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/content_model.dart';
 
@@ -54,6 +57,7 @@ class _HomeScreenState extends State<MyBookScreen> {
   Widget build(BuildContext context) {
     final daysInMonth = DateUtils.getDaysInMonth(DateTime.now().year, 3);
     final bookViewModel = context.watch<BookViewModel>();
+    final appViewModel = context.watch<AppViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -196,14 +200,14 @@ class _HomeScreenState extends State<MyBookScreen> {
                       widget.dimens.k10,
                     )),
                     Text(
-                      'Pre order your book',
+                      appViewModel.userData!.hasOrderedBook == true ? 'You have ordered your book' : 'Pre order your book',
                       style: context.textTheme.bodyText1?.copyWith(
                         color: Style.whiteColor,
                       ),
                     ),
                     const Spacer(),
-                    Text(
-                      '\$ 19.99/year',
+                    appViewModel.userData!.hasOrderedBook == true ? const SizedBox.shrink() : Text(
+                      '\$ 20.00/year',
                       style: context.textTheme.caption?.copyWith(
                         color: Style.whiteColor,
                       ),
@@ -211,17 +215,19 @@ class _HomeScreenState extends State<MyBookScreen> {
                   ],
                 ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
             .onTap(() {
-          showModalBottomSheet(
-              context: context,
-              shape: const RoundedRectangleBorder(
-                // <-- SEE HERE
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(25.0),
-                ),
-              ),
-              builder: (context) {
-                return bottomSheetWidget();
-              });
+              if(appViewModel.userData!.hasOrderedBook != true){
+                showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      // <-- SEE HERE
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0),
+                      ),
+                    ),
+                    builder: (context) {
+                      return bottomSheetWidget();
+                    });
+              }
         }),
       ],
     ).addPadding(EdgeInsets.all(widget.dimens.k15));
@@ -238,7 +244,8 @@ class _HomeScreenState extends State<MyBookScreen> {
   ];
 
   Widget bottomSheetWidget() {
-    return SizedBox(
+    final appViewModel = context.read<AppViewModel>();
+  return SizedBox(
       height: widget.dimens.k350,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -283,7 +290,7 @@ class _HomeScreenState extends State<MyBookScreen> {
                     ),
                   ),
                   Text(
-                    '\$ 19.99',
+                    '\$ 20.00',
                     style: context.textTheme.bodyText1?.copyWith(
                       color: Style.textColor,
                     ),
@@ -291,7 +298,13 @@ class _HomeScreenState extends State<MyBookScreen> {
                 ],
               ).addPadding(EdgeInsets.symmetric(horizontal: widget.dimens.k15)),
             ),
-          ),
+          ).onTap(() {
+            if(widget.iPrefHelper.retrieveUser()['isPremiumUser'] == true){
+              widget.navigator.pushNamed(RoutePath.paymentPage, object: PaymentMethodModel(isSignUp: false, amount: 20.0));
+            }else{
+              SectionToast.show('You are not a premium user');
+            }
+          }),
           SizedBox(
             height: widget.dimens.k20,
           ),

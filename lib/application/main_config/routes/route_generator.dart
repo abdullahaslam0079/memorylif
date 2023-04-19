@@ -18,6 +18,8 @@ class RouteGenerator {
         return PageRouter.fadeScale(() => DashboardScreen());
         case RoutePath.textEditorScreen:
         return PageRouter.fadeScale(() => TextEditorScreen());
+        case RoutePath.paymentPage:
+        return PageRouter.fadeScale(() => PaymentPage(paymentMethod: args as PaymentMethodModel,));
         case RoutePath.bookPageContent:
         return PageRouter.fadeScale(() => BookPageContent(contentModel: args as ContentModel));
       default:

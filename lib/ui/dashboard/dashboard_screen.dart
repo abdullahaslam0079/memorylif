@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:memorylif/application/app_view_model.dart';
 import 'package:memorylif/application/book_view_model.dart';
 import 'package:memorylif/application/core/extensions/extensions.dart';
 import 'package:memorylif/constant/style.dart';
+import 'package:memorylif/data/models/user_model.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
 import 'package:memorylif/ui/book/my_book_screen.dart';
 import 'package:memorylif/ui/home/home_screen.dart';
@@ -30,6 +32,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
+    final appViewModel = context.read<AppViewModel>();
+    appViewModel.saveUserModel(newUserData: UserModel.fromJson(widget.iPrefHelper.retrieveUser()));
     super.initState();
     setLocalDb();
   }

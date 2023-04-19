@@ -10,6 +10,7 @@ import 'package:memorylif/ui/book/book_page_content.dart';
 import 'package:memorylif/ui/dashboard/dashboard_screen.dart';
 import 'package:memorylif/ui/home/home_screen.dart';
 import 'package:memorylif/ui/home/widgets/text_editor.dart';
+import 'package:memorylif/ui/payment/cash/payment_page.dart';
 
 import '../../../ui/splash/splashScreen.dart';
 part 'route_generator.dart';

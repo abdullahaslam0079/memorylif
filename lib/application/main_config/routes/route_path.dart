@@ -8,4 +8,5 @@ class RoutePath {
   static const bookPageContent = '${initialRoute}bookPageContent';
   static const textEditorScreen = '${initialRoute}textEditorScreen';
   static const dashboardScreen = '${initialRoute}dashboardScreen';
+  static const paymentPage = '${initialRoute}paymentPage';
 }

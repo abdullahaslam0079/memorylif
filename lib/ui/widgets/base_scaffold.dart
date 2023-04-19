@@ -40,7 +40,7 @@ class BaseScaffoldWithBaseContainer extends BaseStateLessWidget {
     return Container(
       decoration: boxDecoration ?? Style.baseBackground,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Style.primaryColor,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         bottomNavigationBar: bottomNavBar,
         appBar: appBar,

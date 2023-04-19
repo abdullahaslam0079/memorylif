@@ -123,8 +123,9 @@ class _SignUpScreenState extends State<AlreadyHaveAccount> {
       if(doc.exists){
         widget.iPrefHelper.setAppStatusPremium(true);
         d(widget.iPrefHelper.getAppPremiumStatus().toString());
-        UserModel userData = UserModel(name: googleUser.displayName, email: googleUser.email);
-        await writeUserDataOnFirebase(email: googleUser.email, name: googleUser.displayName ?? '');
+        UserModel userData = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+        // UserModel userData = UserModel(name: googleUser.displayName, email: googleUser.email);
+        // await writeUserDataOnFirebase(email: googleUser.email, name: googleUser.displayName ?? '');
         widget.iPrefHelper.saveUser(userData);
         d(widget.iPrefHelper.retrieveUser().toString());
         widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
@@ -136,14 +137,5 @@ class _SignUpScreenState extends State<AlreadyHaveAccount> {
     }else{
       SectionToast.show('Something went wrong');
     }
-  }
-
-  writeUserDataOnFirebase({required String email, required String name})async{
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    await users.doc(email).set({
-      'email': email,
-      'name': name,
-      'isPremium': true
-    });
   }
 }

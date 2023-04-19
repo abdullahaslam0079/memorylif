@@ -7,13 +7,12 @@ import 'package:memorylif/constant/style.dart';
 import 'package:memorylif/data/models/user_model.dart';
 import 'package:memorylif/ui/auth/widgets/get_user_info_dialog_view.dart';
 import 'package:memorylif/ui/base/base_widget.dart';
+import 'package:memorylif/ui/payment/cash/payment_page.dart';
 import 'package:memorylif/ui/widgets/app_bar.dart';
 import 'package:memorylif/ui/widgets/back_button.dart';
 import 'package:memorylif/ui/widgets/base_scaffold.dart';
 import 'package:memorylif/ui/widgets/flutter_toast.dart';
-import 'package:provider/provider.dart';
 import '../../../application/main_config/routes/route_path.dart';
-import '../../application/app_view_model.dart';
 import '../../common/logger/log.dart';
 
 class SignUpScreen extends BaseStateFullWidget {
@@ -39,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Text(
               'One last step',
-              style: context.textTheme.headline5?.copyWith(
+              style: context.textTheme.headlineSmall?.copyWith(
                 color: Style.textColor,
                 fontWeight: FontWeight.w600,
               ),
@@ -49,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Text(
               'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
-              style: context.textTheme.bodyText2?.copyWith(
+              style: context.textTheme.bodyMedium?.copyWith(
                 color: Style.textColor,
               ),
             ),
@@ -58,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Text(
               'If you paid the premium version and uninstall the application ot lost your phone then no problem, just connect with Google and all your data will be recovered.\n\nIf you didn\'t have premium version then sorry, we cannot recover your data.',
-              style: context.textTheme.bodyText2?.copyWith(
+              style: context.textTheme.bodyMedium?.copyWith(
                 color: Style.textColor,
               ),
             ),
@@ -74,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
                 Text(
                   'I accept Terms and Conditions',
-                  style: context.textTheme.bodyText2?.copyWith(
+                  style: context.textTheme.bodyMedium?.copyWith(
                     color: Style.textColor,
                   ),
                 ),
@@ -95,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: <Widget>[
                     Text(
                       'Use normal app',
-                      style: context.textTheme.bodyText1?.copyWith(
+                      style: context.textTheme.bodyLarge?.copyWith(
                         color: Style.textColor,
                       ),
                     ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
@@ -138,22 +137,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         )),
                         Text(
                           'Continue with Google',
-                          style: context.textTheme.bodyText1?.copyWith(
+                          style: context.textTheme.bodyLarge?.copyWith(
                             color: Style.whiteColor,
                           ),
                         ),
                         const Spacer(),
                         Text(
-                          '\$ 19.99/year',
-                          style: context.textTheme.caption?.copyWith(
+                          '\$ 20/year',
+                          style: context.textTheme.bodySmall?.copyWith(
                             color: Style.whiteColor,
                           ),
                         ).addPadding(EdgeInsets.only(right: widget.dimens.k10)),
                       ],
                     ).addPadding(const EdgeInsets.symmetric(horizontal: 5)))
                 .onTap(() async {
-              await signInWithGoogle();
-              widget.navigator.pushReplacementNamed(RoutePath.dashboardScreen);
+              widget.navigator.pushNamed(RoutePath.paymentPage, object: PaymentMethodModel(amount: 20.00, isSignUp: true));
+              // await signInWithGoogle();
             }),
           ],
         ).addPadding(EdgeInsets.symmetric(
